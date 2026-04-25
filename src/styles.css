@@ -5,7 +5,7 @@
 :root {
   --blue: #1a5276;
   --light-blue: #2980b9;
-  --orange: #e67e22;
+  --orange: #1f7a4d;
   --green: #27ae60;
   --gray: #f4f6f7;
   --dark: #2c3e50;
@@ -59,9 +59,22 @@ button {
 }
 
 .nav h1 {
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   font-weight: 700;
   margin: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brand-mark {
+  width: 2.3rem;
+  height: 2.3rem;
+  object-fit: contain;
+  flex: 0 0 auto;
 }
 
 .nav h1 span {
@@ -126,8 +139,11 @@ button {
   left: 0.85rem;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 1.1rem;
-  opacity: 0.6;
+  font-size: 0.8rem;
+  font-weight: 700;
+  opacity: 0.55;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .quick-nav {
@@ -146,6 +162,8 @@ button {
 
 .quick-card {
   background: var(--white);
+  border: none;
+  appearance: none;
   border-radius: 8px;
   padding: 1.25rem 0.75rem;
   text-align: center;
@@ -155,19 +173,18 @@ button {
   color: var(--dark);
 }
 
+.quick-card:focus-visible {
+  outline: 2px solid var(--light-blue);
+  outline-offset: 2px;
+}
+
 .quick-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.quick-card .emoji {
-  font-size: 2rem;
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
 .quick-card .label {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 600;
 }
 
@@ -225,6 +242,27 @@ button {
   gap: 0.75rem;
 }
 
+.resource-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  scroll-margin-top: 6rem;
+}
+
+.resource-group-header h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--dark);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.resource-group-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
 .resource-card {
   background: var(--white);
   border-radius: 8px;
@@ -242,7 +280,8 @@ button {
   border-left-color: var(--green);
 }
 
-.resource-card h4 {
+.resource-card h4,
+.resource-card h5 {
   margin: 0 0 0.25rem;
 }
 
@@ -379,6 +418,10 @@ button {
   font-weight: 600;
 }
 
+.rights-card .resource-link {
+  margin-top: 0.4rem;
+}
+
 .transport-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -393,10 +436,31 @@ button {
   text-align: center;
 }
 
-.transport-card .emoji {
-  font-size: 1.5rem;
+.transport-link {
+  color: inherit;
+  text-decoration: none;
   display: block;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.transport-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.transport-link:focus-visible {
+  outline: 2px solid var(--light-blue);
+  outline-offset: 2px;
+}
+
+.transport-label {
+  display: inline-block;
   margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--light-blue);
 }
 
 .transport-card h4 {
@@ -407,6 +471,14 @@ button {
   font-size: 0.85rem;
   color: #666;
   margin: 0;
+}
+
+.transport-note {
+  margin: 0.85rem auto 0;
+  font-size: 0.9rem;
+  color: #555;
+  max-width: 70ch;
+  text-align: center;
 }
 
 .footer {
@@ -439,14 +511,6 @@ button {
 
   .quick-card {
     padding: 1rem 0.5rem;
-  }
-
-  .quick-card .emoji {
-    font-size: 1.5rem;
-  }
-
-  .quick-card .label {
-    font-size: 0.75rem;
   }
 
   .rights-grid,

@@ -272,39 +272,46 @@ const rights = [
     title: 'If ICE Comes to Your Door',
     desc: 'You have the right to not open the door. Ask to see a warrant signed by a judge. You have the right to remain silent and to a lawyer.',
     phone: 'ACLUF: 212-549-2500',
+    url: 'https://www.nyc.gov/knowyourrights',
   },
   {
     title: 'Tenant Rights',
     desc: 'Landlords cannot evict you without a court order. You have the right to heat, hot water, and safe conditions. Report violations to 311.',
     phone: 'Met Council: 212-693-0553',
+    url: 'https://www.nyc.gov/site/buildings/tenant/tenants-rights.page',
   },
   {
     title: 'Workers Rights',
     desc: 'All workers have rights regardless of immigration status: minimum wage, safe conditions, and the right to report violations without retaliation.',
     phone: 'DOL: 888-4-NYSDOL',
+    url: 'https://dol.ny.gov/labor-standards-0',
   },
 ];
 
 const transport = [
   {
-    emoji: '🚇',
     title: 'Subway',
-    desc: 'E, F, 7, N, W, R lines connect major Queens hubs. $2.90 per ride.',
+    label: 'Transit',
+    url: 'https://www.mta.info/maps/subway-line-maps',
+    desc: 'Use the MTA subway line maps to see each route and its transfers. Current base fare is $3.00 per ride.',
   },
   {
-    emoji: '🚌',
     title: 'Bus',
-    desc: 'Extensive bus network. Q44, Q58, Q60 are key crosstown routes. Free transfers.',
+    label: 'Transit',
+    url: 'https://transitapp.com/',
+    desc: 'Transit helps track buses and trains in real time. For official route lookup, use MTA Bus Time.',
   },
   {
-    emoji: '📱',
     title: 'OMNY',
-    desc: 'Tap phone or card at any reader. No MetroCard needed. Install the OMNY app.',
+    label: 'Transit',
+    url: 'https://www.mta.info/fares-tolls/subway-bus/tap-and-ride',
+    desc: 'OMNY is MTA’s tap-to-pay system for subway and bus fares.',
   },
   {
-    emoji: '🚲',
     title: 'Citi Bike',
-    desc: 'Bike share in western Queens. $4.49/single ride. E-bikes available.',
+    label: 'Transit',
+    url: 'https://citibikenyc.com/',
+    desc: 'Citi Bike is the city’s official bike share system with stations across Queens.',
   },
 ];
 
@@ -326,7 +333,10 @@ const filters = [
   { key: 'jobs', label: 'Jobs' },
 ];
 
+const categoryOrder = filters.filter((item) => item.key !== 'all');
+
 const langTags = new Set(['Spanish', 'Mandarin', 'Bengali', 'Hindi', 'Nepali', 'Korean', 'Multiple Languages']);
+const queensSealUrl = 'https://commons.wikimedia.org/wiki/Special:FilePath/Seal_of_Borough_of_Queens.svg';
 
 function App() {
   const [language, setLanguage] = useState('en');
@@ -352,6 +362,13 @@ function App() {
     return matchesFilter && matchesQuery;
   });
 
+  const groupedResources = categoryOrder
+    .map((category) => ({
+      ...category,
+      items: filteredResources.filter((resource) => resource.category === category.key),
+    }))
+    .filter((group) => group.items.length > 0);
+
   const toggleDone = (index) => {
     setDone((current) => {
       const next = new Set(current);
@@ -361,11 +378,28 @@ function App() {
     });
   };
 
+  const jumpToCategory = (category) => {
+    setFilter(category);
+    requestAnimationFrame(() => {
+      document.getElementById(category)?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    });
+  };
+
   return (
-    <div className="app-shell">
+    <div className="app-shell" id="top">
       <header className="nav">
         <div className="inner">
-          <h1>Queens <span>Navigator</span></h1>
+          <h1 className="brand">
+            <img
+              className="brand-mark"
+              src={queensSealUrl}
+              alt="Seal of the Borough of Queens"
+            />
+            <span>One</span> Queens
+          </h1>
           <div className="lang-toggle" aria-label="Language selector">
             {languageButtons.map((button) => (
               <button
@@ -383,9 +417,9 @@ function App() {
 
       <section className="hero">
         <h2>{copy.hero_title || 'Find Help in Queens'}</h2>
-        <p>{copy.hero_sub || 'Free and low-cost resources for newcomers. Search by service, language, or neighborhood.'}</p>
+        <p>{copy.hero_sub || 'New to Queens? We are here to help with free and low-cost resources. Search by service, language, or neighborhood.'}</p>
         <div className="search-box">
-          <span className="icon" aria-hidden="true">🔎</span>
+          <span className="icon" aria-hidden="true">Search</span>
           <input
             type="text"
             value={query}
@@ -398,12 +432,12 @@ function App() {
       <main>
         <section className="quick-nav">
           <div className="quick-nav-grid">
-            <a href="#resources" className="quick-card"><span className="emoji">⚖</span><span className="label">{copy.cat_legal || 'Legal Aid'}</span></a>
-            <a href="#resources" className="quick-card"><span className="emoji">📚</span><span className="label">{copy.cat_esl || 'ESL Classes'}</span></a>
-            <a href="#rights" className="quick-card"><span className="emoji">🏥</span><span className="label">{copy.cat_health || 'Healthcare'}</span></a>
-            <a href="#resources" className="quick-card"><span className="emoji">🍲</span><span className="label">{copy.cat_food || 'Food Help'}</span></a>
-            <a href="#resources" className="quick-card"><span className="emoji">🏠</span><span className="label">{copy.cat_housing || 'Housing'}</span></a>
-            <a href="#resources" className="quick-card"><span className="emoji">💼</span><span className="label">{copy.cat_jobs || 'Employment'}</span></a>
+            <button type="button" className="quick-card" onClick={() => jumpToCategory('legal')}><span className="label">{copy.cat_legal || 'Legal Aid'}</span></button>
+            <button type="button" className="quick-card" onClick={() => jumpToCategory('esl')}><span className="label">{copy.cat_esl || 'ESL Classes'}</span></button>
+            <button type="button" className="quick-card" onClick={() => jumpToCategory('health')}><span className="label">{copy.cat_health || 'Healthcare'}</span></button>
+            <button type="button" className="quick-card" onClick={() => jumpToCategory('food')}><span className="label">{copy.cat_food || 'Food Help'}</span></button>
+            <button type="button" className="quick-card" onClick={() => jumpToCategory('housing')}><span className="label">{copy.cat_housing || 'Housing'}</span></button>
+            <button type="button" className="quick-card" onClick={() => jumpToCategory('jobs')}><span className="label">{copy.cat_jobs || 'Employment'}</span></button>
           </div>
         </section>
 
@@ -447,27 +481,36 @@ function App() {
           </div>
 
           <div className="resource-list">
-            {filteredResources.map((resource) => (
-              <article key={`${resource.category}-${resource.name}`} className={`resource-card ${resource.tags.includes('Free') ? 'free' : ''}`}>
-                <h4>{resource.name}</h4>
-                <div className="org">{resource.org}</div>
-                <div className="desc">{resource.desc}</div>
-                {resource.url ? (
-                  <a className="resource-link" href={resource.url} target="_blank" rel="noreferrer">
-                    Visit website
-                  </a>
-                ) : null}
-                <div className="tags">
-                  {resource.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className={`tag ${tag === 'Free' ? 'free' : ''} ${langTags.has(tag) ? 'lang' : ''}`}
-                    >
-                      {tag}
-                    </span>
+            {groupedResources.map((group) => (
+              <section key={group.key} className="resource-group" id={group.key}>
+                <div className="resource-group-header">
+                  <h4>{group.label}</h4>
+                </div>
+                <div className="resource-group-list">
+                  {group.items.map((resource) => (
+                    <article key={`${resource.category}-${resource.name}`} className={`resource-card ${resource.tags.includes('Free') ? 'free' : ''}`}>
+                      <h5>{resource.name}</h5>
+                      <div className="org">{resource.org}</div>
+                      <div className="desc">{resource.desc}</div>
+                      {resource.url ? (
+                        <a className="resource-link" href={resource.url} target="_blank" rel="noreferrer">
+                          Visit website
+                        </a>
+                      ) : null}
+                      <div className="tags">
+                        {resource.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className={`tag ${tag === 'Free' ? 'free' : ''} ${langTags.has(tag) ? 'lang' : ''}`}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </article>
                   ))}
                 </div>
-              </article>
+              </section>
             ))}
           </div>
         </section>
@@ -482,6 +525,9 @@ function App() {
                 <h4>{item.title}</h4>
                 <p>{item.desc}</p>
                 <span className="phone">{item.phone}</span>
+                <a className="resource-link" href={item.url} target="_blank" rel="noreferrer">
+                  Open resource
+                </a>
               </article>
             ))}
           </div>
@@ -493,18 +539,27 @@ function App() {
           </div>
           <div className="transport-grid">
             {transport.map((item) => (
-              <article key={item.title} className="transport-card">
-                <span className="emoji" aria-hidden="true">{item.emoji}</span>
+              <a
+                key={item.title}
+                className="transport-card transport-link"
+                href={item.url}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span className="transport-label">{item.label}</span>
                 <h4>{item.title}</h4>
                 <p>{item.desc}</p>
-              </article>
+              </a>
             ))}
           </div>
+          <p className="transport-note">
+            Transfers are encoded when you tap the same card or device. With OMNY or a Pay-Per-Ride MetroCard, you get one free transfer within two hours between subway and bus, bus and subway, or bus and bus. If you switch to an express bus, you pay the difference unless you have an express-bus unlimited option.
+          </p>
         </section>
       </main>
 
       <footer className="footer">
-        <p>Queens Resource Navigator - Built for the community, by the community.</p>
+        <p>One Queens - Built for the community, by the community.</p>
         <p>Emergency: Call <span className="hotline">911</span> | NYC Info: Call <span className="hotline">311</span></p>
       </footer>
     </div>
