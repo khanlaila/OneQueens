@@ -124,6 +124,22 @@ const resources = [
     tags: ['ESOL', 'In-person', 'Registration', 'Placement Exam'],
   },
   {
+    name: 'ESL Programs at QCC',
+    org: 'Port of Entry | CUNY Language Immersion Program | ESL Program',
+    desc: 'Adult ESL options at Queensborough Community College, including Port of Entry, the CUNY Language Immersion Program, and the ESL Program.',
+    category: 'esl',
+    url: 'https://www.qcc.cuny.edu/esl/index.html',
+    tags: ['ESL', 'QCC', 'Adults', 'CUNY'],
+  },
+  {
+    name: 'Catholic Charities Brooklyn and Queens - ESOL',
+    org: 'Adult English Learners support',
+    desc: 'Free literacy programming for adult English learners to improve listening, speaking, reading, writing, and comprehension. Students receive social service and legal referral information for U.S. citizenship and other immigration services, plus ESOL workshops on healthy living and available healthcare resources.',
+    category: 'esl',
+    url: 'https://www.ccbq.org/service/esol-english-for-speakers-of-other-languages-program/',
+    tags: ['Free', 'ESOL', 'Adults', 'Literacy', 'Citizenship'],
+  },
+  {
     name: 'Queens Community House',
     org: 'Forest Hills & satellite sites',
     desc: 'Job readiness training, career counseling, resume workshops, and connections to employers.',
@@ -141,7 +157,7 @@ const resources = [
     name: 'South Asian Youth Action (SAYA)',
     org: 'Elmhurst',
     desc: 'Youth programs, college prep, leadership development, and mental health support for South Asian youth.',
-    category: 'esl',
+    category: 'jobs',
     tags: ['Free', 'Youth', 'Bengali', 'Hindi'],
   },
   {
@@ -628,9 +644,18 @@ const filters = [
 ];
 
 const categoryOrder = filters.filter((item) => item.key !== 'all');
+const categoryColors = {
+  legal: '#7c4dff',
+  esl: '#ff6b6b',
+  health: '#ffd166',
+  food: '#06d6a0',
+  housing: '#4d96ff',
+  jobs: '#ff9f1c',
+};
 
 const langTags = new Set(['Spanish', 'Mandarin', 'Bengali', 'Hindi', 'Nepali', 'Korean', 'Multiple Languages']);
 const queensSealUrl = 'https://commons.wikimedia.org/wiki/Special:FilePath/Seal_of_Borough_of_Queens.svg';
+const queensHeroImageUrl = 'https://commons.wikimedia.org/wiki/Special:FilePath/Jackson%20Heights%2C%20Queens%20NY.jpg';
 
 function App() {
   const [language, setLanguage] = useState('en');
@@ -724,7 +749,7 @@ function App() {
         </div>
       </header>
 
-      <section className="hero">
+      <section className="hero" style={{ '--hero-image': `url("${queensHeroImageUrl}")` }}>
         <h2>{copy.hero_title || 'Find Help in Queens'}</h2>
         <p>{copy.hero_sub || 'New to Queens? We are here to help with free and low-cost resources. Search by service, language, or neighborhood.'}</p>
         <div className="search-box">
@@ -741,12 +766,12 @@ function App() {
       <main>
         <section className="quick-nav">
           <div className="quick-nav-grid">
-            <button type="button" className="quick-card" onClick={() => jumpToCategory('legal')}><span className="label">{copy.cat_legal || 'Legal Aid'}</span></button>
-            <button type="button" className="quick-card" onClick={() => jumpToCategory('esl')}><span className="label">{copy.cat_esl || 'ESL Classes'}</span></button>
-            <button type="button" className="quick-card" onClick={() => jumpToCategory('health')}><span className="label">{copy.cat_health || 'Healthcare'}</span></button>
-            <button type="button" className="quick-card" onClick={() => jumpToCategory('food')}><span className="label">{copy.cat_food || 'Food Help'}</span></button>
-            <button type="button" className="quick-card" onClick={() => jumpToCategory('housing')}><span className="label">{copy.cat_housing || 'Housing'}</span></button>
-            <button type="button" className="quick-card" onClick={() => jumpToCategory('jobs')}><span className="label">{copy.cat_jobs || 'Employment'}</span></button>
+            <button type="button" className="quick-card" style={{ '--topic-color': categoryColors.legal }} onClick={() => jumpToCategory('legal')}><span className="label">{copy.cat_legal || 'Legal Aid'}</span></button>
+            <button type="button" className="quick-card" style={{ '--topic-color': categoryColors.esl }} onClick={() => jumpToCategory('esl')}><span className="label">{copy.cat_esl || 'ESL Classes'}</span></button>
+            <button type="button" className="quick-card" style={{ '--topic-color': categoryColors.health }} onClick={() => jumpToCategory('health')}><span className="label">{copy.cat_health || 'Healthcare'}</span></button>
+            <button type="button" className="quick-card" style={{ '--topic-color': categoryColors.food }} onClick={() => jumpToCategory('food')}><span className="label">{copy.cat_food || 'Food Help'}</span></button>
+            <button type="button" className="quick-card" style={{ '--topic-color': categoryColors.housing }} onClick={() => jumpToCategory('housing')}><span className="label">{copy.cat_housing || 'Housing'}</span></button>
+            <button type="button" className="quick-card" style={{ '--topic-color': categoryColors.jobs }} onClick={() => jumpToCategory('jobs')}><span className="label">{copy.cat_jobs || 'Employment'}</span></button>
           </div>
         </section>
 
@@ -821,6 +846,7 @@ function App() {
               <button
                 key={item.key}
                 className={`filter-btn ${filter === item.key ? 'active' : ''}`}
+                style={{ '--topic-color': item.key === 'all' ? '#bdbdbd' : categoryColors[item.key] }}
                 onClick={() => setFilter(item.key)}
                 type="button"
               >
@@ -831,7 +857,7 @@ function App() {
 
           <div className="resource-list">
             {groupedResources.map((group) => (
-              <section key={group.key} className="resource-group" id={group.key}>
+              <section key={group.key} className="resource-group" id={group.key} style={{ '--topic-color': categoryColors[group.key] }}>
                 <div className="resource-group-header">
                   <h4>{group.label}</h4>
                 </div>
