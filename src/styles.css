@@ -473,6 +473,13 @@ button {
   margin: 0;
 }
 
+.transport-subnote {
+  display: block;
+  margin-top: 0.45rem;
+  font-size: 0.8rem;
+  color: var(--light-blue);
+}
+
 .transport-note {
   margin: 0.85rem auto 0;
   font-size: 0.9rem;
