@@ -48,6 +48,7 @@ const resources = [
     org: 'Various locations',
     desc: 'Free meal distribution for newly arrived families. Fresh, culturally appropriate meals.',
     category: 'food',
+    url: 'https://wck.org/',
     tags: ['Free', 'Food', 'No Docs Needed'],
   },
   {
@@ -55,7 +56,72 @@ const resources = [
     org: 'Queens Village',
     desc: 'Weekly food distribution. Fresh produce, pantry staples. Bring a bag. No ID required.',
     category: 'food',
-    tags: ['Free', 'Food', 'Spanish'],
+    url: 'https://www.lajornadany.org/',
+    tags: ['Free', 'Food', 'Spanish', 'No Docs Needed'],
+  },
+  {
+    name: 'New Immigrant Community Empowerment (NICE)',
+    org: '71-29 Roosevelt Ave, Jackson Heights | (718) 565-8500',
+    desc: 'Specifically serves immigrants with community support and food access resources.',
+    category: 'food',
+    url: 'https://www.nynice.org/',
+    tags: ['Free', 'Food', 'Immigrant Support', 'Jackson Heights', 'No Docs Needed'],
+  },
+  {
+    name: 'SACSS Food Pantry',
+    org: 'South Asian community',
+    desc: 'Stocks culturally familiar foods with multilingual staff support.',
+    category: 'food',
+    url: 'https://www.sacssny.org/',
+    tags: ['Free', 'Food', 'South Asian', 'Multilingual', 'No Docs Needed'],
+  },
+  {
+    name: 'Buddhist Tzu Chi Foundation',
+    org: '137-77 Northern Blvd, Flushing | (718) 888-0866',
+    desc: 'Community food support and relief services in Flushing.',
+    category: 'food',
+    url: 'https://tzuchi.us/ny',
+    tags: ['Free', 'Food', 'Flushing', 'Community Support', 'No Docs Needed'],
+  },
+  {
+    name: 'Korean Community Services',
+    org: '203-05 32nd Ave, Bayside | (718) 939-6137',
+    desc: 'Food assistance and community services for the Korean community.',
+    category: 'food',
+    url: 'https://www.kcsny.org/',
+    tags: ['Free', 'Food', 'Korean', 'Bayside', 'No Docs Needed'],
+  },
+  {
+    name: 'Queens Community House',
+    org: '108-25 62nd Dr, Forest Hills | (718) 592-5757',
+    desc: 'Food support and neighborhood services for local families.',
+    category: 'food',
+    url: 'https://www.qchnyc.org/',
+    tags: ['Free', 'Food', 'Forest Hills', 'Community', 'No Docs Needed'],
+  },
+  {
+    name: 'Greater Ridgewood Youth Council',
+    org: '5903 Summerfield St, Ridgewood | (718) 456-5437',
+    desc: 'Youth and family services that include food support and referrals.',
+    category: 'food',
+    url: 'https://www.greaterridgewoodyouthcouncil.org/',
+    tags: ['Free', 'Food', 'Ridgewood', 'Youth', 'No Docs Needed'],
+  },
+  {
+    name: 'Haitian Americans United for Progress',
+    org: '19717 Hillside Ave, Hollis | (718) 527-3776',
+    desc: 'Community organization supporting Haitian residents with resources and referrals.',
+    category: 'food',
+    url: 'https://www.haupinc.org/',
+    tags: ['Free', 'Food', 'Haitian', 'Hollis', 'No Docs Needed'],
+  },
+  {
+    name: 'YMCA',
+    org: 'Queens branches',
+    desc: 'Local YMCA branches may offer food support, pantry programs, or meal referrals.',
+    category: 'food',
+    url: 'https://ymcanyc.org/',
+    tags: ['Free', 'Food', 'Community', 'No Docs Needed'],
   },
   {
     name: 'Queens Community House',
@@ -382,10 +448,15 @@ function App() {
 
           <div className="resource-list">
             {filteredResources.map((resource) => (
-              <article key={resource.name} className={`resource-card ${resource.tags.includes('Free') ? 'free' : ''}`}>
+              <article key={`${resource.category}-${resource.name}`} className={`resource-card ${resource.tags.includes('Free') ? 'free' : ''}`}>
                 <h4>{resource.name}</h4>
                 <div className="org">{resource.org}</div>
                 <div className="desc">{resource.desc}</div>
+                {resource.url ? (
+                  <a className="resource-link" href={resource.url} target="_blank" rel="noreferrer">
+                    Visit website
+                  </a>
+                ) : null}
                 <div className="tags">
                   {resource.tags.map((tag) => (
                     <span

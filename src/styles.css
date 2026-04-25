@@ -258,6 +258,18 @@ button {
   margin-bottom: 0.75rem;
 }
 
+.resource-link {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  color: var(--light-blue);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.resource-link:hover {
+  text-decoration: underline;
+}
+
 .resource-card .tags {
   display: flex;
   gap: 0.4rem;
