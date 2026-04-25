@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Healthcare - Queens Resource Navigator</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #1a5276;
+      --light-blue: #2980b9;
+      --orange: #e67e22;
+      --green: #27ae60;
+      --gray: #f4f6f7;
+      --dark: #2c3e50;
+      --white: #ffffff;
+      --shadow: 0 2px 8px rgba(0,0,0,0.1);
+      --health-accent: #16a085;
+      --health-light: #e8f8f5;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--dark);
+      background: var(--gray);
+      line-height: 1.6;
+    }
+
+    /* Nav */
+    nav {
+      background: var(--blue);
+      color: var(--white);
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+    nav .inner {
+      max-width: 960px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    nav h1 { font-size: 1.25rem; font-weight: 700; }
+    nav h1 span { color: var(--orange); }
+    .lang-toggle { display: flex; gap: 0.25rem; }
+    .lang-btn {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: var(--white);
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: background 0.2s;
+    }
+    .lang-btn:hover, .lang-btn.active { background: rgba(255,255,255,0.3); }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1rem 1rem 0;
+      font-size: 0.85rem;
+      color: #888;
+    }
+    .breadcrumb a { color: var(--light-blue); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+
+    /* Page Hero */
+    .page-hero {
+      background: linear-gradient(135deg, var(--health-accent), #0e6655);
+      color: var(--white);
+      padding: 2.5rem 1rem;
+      text-align: center;
+    }
+    .page-hero .emoji { font-size: 2.5rem; display: block; margin-bottom: 0.5rem; }
+    .page-hero h2 { font-size: 1.75rem; margin-bottom: 0.5rem; }
+    .page-hero p { opacity: 0.9; max-width: 560px; margin: 0 auto; }
+
+    /* Key Info Banner */
+    .key-banner {
+      background: var(--health-light);
+      border: 1px solid #1abc9c33;
+      border-radius: 8px;
+      max-width: 960px;
+      margin: -1rem auto 0;
+      padding: 1rem 1.25rem;
+      position: relative;
+      z-index: 10;
+    }
+    .key-banner .title {
+      font-weight: 700;
+      color: var(--health-accent);
+      font-size: 0.95rem;
+      margin-bottom: 0.35rem;
+    }
+    .key-banner .desc { font-size: 0.85rem; color: #555; }
+
+    /* Sections */
+    .section {
+      max-width: 960px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .section-header h3 { font-size: 1.25rem; color: var(--blue); }
+
+    /* Filter Bar */
+    .filter-bar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .filter-btn {
+      background: var(--white);
+      border: 1px solid #ddd;
+      padding: 0.4rem 0.85rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--health-accent);
+      color: var(--white);
+      border-color: var(--health-accent);
+    }
+
+    /* Resource Cards */
+    .resource-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .resource-card {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--health-accent);
+      transition: transform 0.2s;
+    }
+    .resource-card:hover { transform: translateX(2px); }
+    .resource-card.free { border-left-color: var(--green); }
+    .resource-card h4 { margin-bottom: 0.25rem; }
+    .resource-card .org { color: var(--health-accent); font-size: 0.85rem; margin-bottom: 0.5rem; }
+    .resource-card .desc { font-size: 0.9rem; color: #555; margin-bottom: 0.5rem; }
+    .resource-card .contact {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .resource-card .contact span { display: flex; align-items: center; gap: 0.35rem; }
+    .resource-card .tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .tag {
+      background: var(--gray);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      color: #666;
+    }
+    .tag.free { background: #e8f8f0; color: var(--green); }
+    .tag.lang { background: var(--health-light); color: var(--health-accent); }
+
+    /* Insurance Options */
+    .insurance-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem;
+    }
+    .insurance-card {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+    }
+    .insurance-card .emoji { font-size: 1.5rem; display: block; margin-bottom: 0.5rem; }
+    .insurance-card h4 { margin-bottom: 0.25rem; font-size: 0.95rem; }
+    .insurance-card .eligibility {
+      font-size: 0.75rem;
+      color: var(--health-accent);
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+    .insurance-card p { font-size: 0.85rem; color: #666; }
+
+    /* Quick Facts */
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.75rem;
+    }
+    .fact-card {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+    .fact-card .emoji { font-size: 1.75rem; display: block; margin-bottom: 0.5rem; }
+    .fact-card h4 { font-size: 0.95rem; margin-bottom: 0.25rem; }
+    .fact-card p { font-size: 0.8rem; color: #666; }
+
+    /* Process Steps */
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.75rem;
+      counter-reset: step;
+    }
+    .process-step {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+      text-align: center;
+      counter-increment: step;
+    }
+    .process-step::before {
+      content: counter(step);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px; height: 32px;
+      background: var(--health-accent);
+      color: white;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    .process-step h4 { margin-bottom: 0.25rem; font-size: 0.95rem; }
+    .process-step p { font-size: 0.8rem; color: #666; }
+
+    /* FAQ Accordion */
+    .faq-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .faq-item {
+      background: var(--white);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .faq-question {
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .faq-question:hover { background: var(--health-light); }
+    .faq-question .arrow { transition: transform 0.2s; font-size: 0.8rem; color: #999; }
+    .faq-item.open .faq-question .arrow { transform: rotate(180deg); }
+    .faq-answer {
+      padding: 0 1.25rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    .faq-item.open .faq-answer {
+      padding: 0 1.25rem 1rem;
+      max-height: 300px;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 3rem;
+      font-size: 0.85rem;
+    }
+    footer a { color: var(--orange); text-decoration: none; }
+    footer .hotline {
+      font-size: 1.1rem;
+      color: var(--white);
+      font-weight: 700;
+      margin-top: 0.5rem;
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .page-hero h2 { font-size: 1.35rem; }
+      .process-steps, .insurance-grid, .facts-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="inner">
+      <h1><a href="index.html" style="color:inherit;text-decoration:none">Queens <span>Navigator</span></a></h1>
+      <div class="lang-toggle">
+        <button class="lang-btn active">EN</button>
+        <button class="lang-btn">ES</button>
+        <button class="lang-btn">中文</button>
+        <button class="lang-btn">বাং</button>
+        <button class="lang-btn">한</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> &rsaquo; Healthcare
+  </div>
+
+  <!-- Hero -->
+  <section class="page-hero">
+    <span class="emoji">&#127973;</span>
+    <h2>Healthcare & Wellness</h2>
+    <p>Access medical care in Queens regardless of insurance or immigration status. Everyone has the right to treatment.</p>
+  </section>
+
+  <!-- Key Info Banner -->
+  <div class="section" style="margin-top:0.5rem;">
+    <div class="key-banner">
+      <div class="title">&#9989; You can see a doctor. Your immigration status does not matter.</div>
+      <div class="desc">NYC law requires hospitals to treat all patients regardless of ability to pay or immigration status. Health information is kept private and is not shared with immigration enforcement.</div>
+    </div>
+  </div>
+
+  <!-- Quick Facts -->
+  <section class="section">
+    <div class="section-header">
+      <h3>What You Need to Know</h3>
+    </div>
+    <div class="facts-grid">
+      <div class="fact-card">
+        <span class="emoji">&#128179;</span>
+        <h4>No Insurance Needed</h4>
+        <p>NYC H+H hospitals and many clinics treat uninsured patients. Ask about sliding-scale fees based on income.</p>
+      </div>
+      <div class="fact-card">
+        <span class="emoji">&#128274;</span>
+        <h4>Your Info Is Private</h4>
+        <p>Medical records are protected by law. Hospitals cannot share your information with ICE or immigration authorities.</p>
+      </div>
+      <div class="fact-card">
+        <span class="emoji">&#128172;</span>
+        <h4>Free Interpreters</h4>
+        <p>All NYC hospitals provide free interpretation in 200+ languages. Just tell the front desk your language.</p>
+      </div>
+      <div class="fact-card">
+        <span class="emoji">&#127968;</span>
+        <h4>Emergency = Always Free</h4>
+        <p>Emergency rooms must treat you regardless of status. Call 911 for emergencies &mdash; ambulances will come to anyone.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Insurance Options -->
+  <section class="section">
+    <div class="section-header">
+      <h3>Insurance & Coverage Options</h3>
+    </div>
+    <div class="insurance-grid">
+      <div class="insurance-card">
+        <span class="emoji">&#128653;</span>
+        <h4>NYC Care</h4>
+        <div class="eligibility">Uninsured, any status</div>
+        <p>Low-cost or free healthcare through NYC H+H. Covers doctor visits, prescriptions, mental health, and specialty care. Enroll at any H+H location.</p>
+      </div>
+      <div class="insurance-card">
+        <span class="emoji">&#128137;</span>
+        <h4>Medicaid</h4>
+        <div class="eligibility">Low-income, certain statuses</div>
+        <p>Free health insurance for qualifying low-income residents. Emergency Medicaid available regardless of immigration status. Apply through NY State of Health.</p>
+      </div>
+      <div class="insurance-card">
+        <span class="emoji">&#128118;</span>
+        <h4>Child Health Plus</h4>
+        <div class="eligibility">Children under 19, any status</div>
+        <p>Free or low-cost health insurance for children regardless of immigration status. Covers check-ups, immunizations, dental, vision, and prescriptions.</p>
+      </div>
+      <div class="insurance-card">
+        <span class="emoji">&#128680;</span>
+        <h4>Emergency Medicaid</h4>
+        <div class="eligibility">Anyone with emergency condition</div>
+        <p>Covers emergency room visits, labor & delivery, and emergency surgery for undocumented immigrants. Apply at the hospital during your visit.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How to Get Care -->
+  <section class="section">
+    <div class="section-header">
+      <h3>How to See a Doctor</h3>
+    </div>
+    <div class="process-steps">
+      <div class="process-step">
+        <h4>Find a Clinic</h4>
+        <p>Choose a location below. NYC H+H hospitals and community health centers accept all patients.</p>
+      </div>
+      <div class="process-step">
+        <h4>Bring What You Have</h4>
+        <p>Any ID you have (passport, NYC ID). Proof of address if possible. Don't worry if you don't have documents.</p>
+      </div>
+      <div class="process-step">
+        <h4>Ask for Help</h4>
+        <p>Tell the front desk your language. Ask about sliding-scale fees, NYC Care, or Medicaid enrollment assistance.</p>
+      </div>
+      <div class="process-step">
+        <h4>Follow Up</h4>
+        <p>Keep your appointment card. Ask about referrals for specialists, prescriptions, and ongoing care.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clinics & Hospitals -->
+  <section class="section">
+    <div class="section-header">
+      <h3>Clinics & Hospitals</h3>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="hospital">Hospitals</button>
+      <button class="filter-btn" data-filter="clinic">Community Clinics</button>
+      <button class="filter-btn" data-filter="mental">Mental Health</button>
+      <button class="filter-btn" data-filter="dental">Dental</button>
+    </div>
+
+    <div class="resource-list" id="resource-list"></div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section">
+    <div class="section-header">
+      <h3>Common Questions</h3>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          Can I see a doctor if I'm undocumented?
+          <span class="arrow">&#9660;</span>
+        </div>
+        <div class="faq-answer">
+          Yes. NYC public hospitals (NYC Health + Hospitals) treat all patients regardless of immigration status or ability to pay. You can also enroll in NYC Care for ongoing low-cost or free healthcare. Your information is kept confidential.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          Will the hospital report me to immigration?
+          <span class="arrow">&#9660;</span>
+        </div>
+        <div class="faq-answer">
+          No. NYC law (Executive Order 41) prohibits city employees, including hospital staff, from asking about or sharing your immigration status. Your medical information is protected by federal privacy laws (HIPAA).
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          What if I can't afford to pay?
+          <span class="arrow">&#9660;</span>
+        </div>
+        <div class="faq-answer">
+          NYC H+H hospitals offer a sliding-scale fee based on your income. If your income is very low, care may be free. Ask the financial counselor at the hospital about "H+H Options" or NYC Care enrollment. You will never be turned away for inability to pay.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          How do I get prescription medication?
+          <span class="arrow">&#9660;</span>
+        </div>
+        <div class="faq-answer">
+          NYC Care and Medicaid cover prescriptions. If uninsured, ask your doctor about generic alternatives. Many pharmacies at H+H hospitals offer steeply discounted medications. Community health centers often have on-site pharmacies with sliding-scale pricing.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          Where can I get vaccinated?
+          <span class="arrow">&#9660;</span>
+        </div>
+        <div class="faq-answer">
+          Free vaccinations (flu, COVID-19, childhood immunizations) are available at NYC H+H hospitals, community health centers listed below, and through the NYC Department of Health walk-in immunization clinics. No ID or insurance required at most locations.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Queens Resource Navigator &mdash; Built for the community, by the community.</p>
+    <p>Emergency: Call <span class="hotline">911</span> | NYC Info: Call <span class="hotline">311</span> | Poison Control: <span class="hotline">212-764-7667</span></p>
+    <p style="margin-top:1rem;"><a href="index.html">&larr; Back to Home</a></p>
+  </footer>
+
+  <script>
+    const resources = [
+      {
+        name: "NYC Health + Hospitals / Elmhurst",
+        org: "79-01 Broadway, Elmhurst",
+        desc: "Full-service public hospital. Emergency department, primary care, specialty care, maternity, pediatrics, and mental health. NYC Care enrollment on-site.",
+        subcategory: "hospital",
+        phone: "(718) 334-4000",
+        hours: "Emergency: 24/7 | Clinics: Mon-Fri 8am-5pm",
+        tags: ["Free/Low-Cost", "Walk-ins Welcome", "Multiple Languages", "NYC Care"]
+      },
+      {
+        name: "NYC Health + Hospitals / Queens",
+        org: "82-68 164th St, Jamaica",
+        desc: "Major public hospital serving Queens. Full emergency, surgical, maternity, and outpatient services. Financial assistance and interpreter services available.",
+        subcategory: "hospital",
+        phone: "(718) 883-3000",
+        hours: "Emergency: 24/7 | Clinics: Mon-Fri 8am-5pm",
+        tags: ["Free/Low-Cost", "Walk-ins Welcome", "Multiple Languages", "NYC Care"]
+      },
+      {
+        name: "NYU Langone Hospital - Queens",
+        org: "56-45 Main St, Flushing",
+        desc: "Community hospital with emergency care, outpatient services, and specialty care. Financial assistance programs available for uninsured patients.",
+        subcategory: "hospital",
+        phone: "(718) 670-1000",
+        hours: "Emergency: 24/7 | Outpatient: Mon-Fri 8am-5pm",
+        tags: ["Sliding Scale", "Mandarin", "Korean", "Emergency"]
+      },
+      {
+        name: "Planned Parenthood - Queens Center",
+        org: "46-02 Queens Blvd, Sunnyside",
+        desc: "Reproductive healthcare, family planning, STI testing and treatment, cancer screenings, and wellness exams. Accepts walk-ins. No insurance needed.",
+        subcategory: "clinic",
+        phone: "(718) 472-8080",
+        hours: "Mon-Sat, hours vary by day",
+        tags: ["Free/Low-Cost", "Walk-ins Welcome", "Spanish", "Reproductive Health"]
+      },
+      {
+        name: "Charles B. Wang Community Health Center",
+        org: "136-26 37th Ave, Flushing",
+        desc: "Federally qualified health center specializing in Asian American communities. Primary care, dental, behavioral health, and social services. All are welcome.",
+        subcategory: "clinic",
+        phone: "(718) 886-1200",
+        hours: "Mon-Sat, hours vary by department",
+        tags: ["Sliding Scale", "Mandarin", "Cantonese", "Korean", "Primary Care"]
+      },
+      {
+        name: "ICD - International Center for Development",
+        org: "40-20 College Point Blvd, Flushing",
+        desc: "Community health center offering primary care, mental health counseling, substance abuse treatment, and health education in multiple languages.",
+        subcategory: "clinic",
+        phone: "(718) 353-4500",
+        hours: "Mon-Fri 9am-5pm, Sat 9am-1pm",
+        tags: ["Sliding Scale", "Mandarin", "Spanish", "Korean"]
+      },
+      {
+        name: "JCCA - Mental Health Clinic (Queens)",
+        org: "Serves all of Queens",
+        desc: "Outpatient mental health clinic providing individual and family therapy, psychiatric evaluations, and medication management. Specialized services for immigrant families and children.",
+        subcategory: "mental",
+        phone: "(212) 558-5900",
+        hours: "Mon-Fri 9am-7pm, Sat by appointment",
+        tags: ["Free/Low-Cost", "Spanish", "Mental Health", "Family Services"]
+      },
+      {
+        name: "SAMHSA National Helpline / Queens Referrals",
+        org: "Free referral service",
+        desc: "Free, confidential, 24/7 treatment referral and information for substance abuse and mental health disorders. Connects to local Queens providers with sliding-scale fees.",
+        subcategory: "mental",
+        phone: "1-800-662-4357",
+        hours: "24/7",
+        tags: ["Free", "Multiple Languages", "Mental Health", "Substance Abuse"]
+      },
+      {
+        name: "Queens LIC Dental Clinic",
+        org: "45-18 46th St, Sunnyside",
+        desc: "Low-cost dental services including cleanings, fillings, extractions, and emergency dental care. Accepts Medicaid and offers sliding-scale fees for uninsured.",
+        subcategory: "dental",
+        phone: "(718) 361-1166",
+        hours: "Mon-Fri 9am-5pm, Sat 9am-1pm",
+        tags: ["Sliding Scale", "Medicaid Accepted", "Dental", "Emergency"]
+      },
+      {
+        name: "NYU Dentistry - Queens Outreach",
+        org: "Mobile unit, various Queens locations",
+        desc: "Free dental screenings, cleanings, and basic treatments through NYU's mobile dental clinic. Visits community centers, schools, and libraries across Queens.",
+        subcategory: "dental",
+        phone: "(212) 998-9898",
+        hours: "Varies - check schedule online",
+        tags: ["Free", "No Docs Needed", "Dental", "Mobile Clinic"]
+      }
+    ];
+
+    function renderResources(filter = 'all') {
+      const list = document.getElementById('resource-list');
+      const filtered = filter === 'all' ? resources : resources.filter(r => r.subcategory === filter);
+      list.innerHTML = filtered.map(r => `
+        <div class="resource-card ${r.tags.includes('Free') || r.tags.includes('Free/Low-Cost') ? 'free' : ''}">
+          <h4>${r.name}</h4>
+          <div class="org">${r.org}</div>
+          <div class="desc">${r.desc}</div>
+          <div class="contact">
+            <span>&#128222; ${r.phone}</span>
+            <span>&#128336; ${r.hours}</span>
+          </div>
+          <div class="tags">
+            ${r.tags.map(t => `<span class="tag ${t === 'Free' || t === 'Free/Low-Cost' ? 'free' : ''} ${['Spanish','Mandarin','Cantonese','Korean','Multiple Languages'].includes(t) ? 'lang' : ''}">${t}</span>`).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderResources(btn.dataset.filter);
+      });
+    });
+
+    renderResources();
+  </script>
+
+</body>
+</html>
