@@ -166,21 +166,25 @@ const translations = {
     cat_jobs: 'Empleo',
     checklist_title: '¿Recién llegado? Empieza aquí',
     step1: 'Obtén una identificación / CityKey',
-    step2: 'Abre una cuenta bancaria',
+    step2: 'Solicita empleo',
     step3: 'Inscribir niños en la escuela',
     step4: 'Encuentra un doctor',
     step5: 'Obtén una MetroCard / OMNY',
     step6: 'Solicita un ITIN',
+    step7: '¿Necesitas ayuda con impuestos?',
     resources_title: 'Directorio de recursos',
     rights_title: 'Conoce tus derechos',
     transport_title: 'Moverse por Queens',
+    mayor_title: 'Mayor News',
+    mayor_subtitle: 'Official updates from City Hall about announcements, actions, and policy changes.',
     checklist_descs: {
       'Get an ID / CityKey': 'La tarjeta NYC ID está disponible para todos los residentes sin importar su estatus. Visita un centro de inscripción.',
-      'Open a Bank Account': 'Muchos bancos aceptan ITIN o identificación extranjera. Capital One y Chase tienen sucursales por todo Queens.',
+      'Apply for Jobs': 'Usa NYC Jobs y Workforce1 para buscar vacantes, obtener ayuda con tu resume y conectarte con servicios gratuitos de empleo.',
       'Enroll Kids in School': 'Todos los niños tienen derecho a asistir a las escuelas públicas de NYC. Visita tu Family Welcome Center local.',
       'Find a Doctor': 'Los hospitales NYC H+H atienden a todos sin importar seguro o estatus migratorio. Solicita NYC Care.',
       'Get a MetroCard / OMNY': 'Toca tu teléfono o compra una tarjeta en cualquier estación de metro. Hay tarifa reducida para quienes califican.',
       'Apply for an ITIN': 'El ITIN te permite presentar impuestos y abrir cuentas bancarias. Visita un sitio VITA para ayuda gratis.',
+      'Need Help with Taxes?': 'NYC Free Tax Prep ofrece ayuda gratis para presentar impuestos con voluntarios certificados por el IRS en toda la ciudad, incluyendo Queens.',
     },
     rights_descs: {
       'If ICE Comes to Your Door': 'Tienes derecho a no abrir la puerta. Pide ver una orden firmada por un juez. Tienes derecho a guardar silencio y a un abogado.',
@@ -192,6 +196,15 @@ const translations = {
       Bus: 'Transit ayuda a seguir autobuses y trenes en tiempo real. Para rutas oficiales, usa MTA Bus Time.',
       OMNY: 'OMNY es el sistema de pago por toque del MTA para el metro y el autobús. Puede haber opciones de tarifa reducida o Fair Fares según elegibilidad.',
       'Citi Bike': 'Citi Bike es el sistema oficial de bicicletas compartidas de la ciudad con estaciones en todo Queens.',
+    },
+    checklist_guides: {
+      'Get an ID / CityKey': ['Reúne prueba de identidad y residencia en NYC.', 'Agenda una cita o busca un lugar sin cita.', 'Lleva tus documentos y completa la solicitud.'],
+      'Apply for Jobs': ['Haz un resume básico y guárdalo como PDF.', 'Crea cuentas en NYC Jobs y Workforce1.', 'Busca vacantes, asiste a talleres y postúlate a empleos que encajen con tu experiencia.'],
+      'Enroll Kids in School': ['Encuentra tu escuela zonal o un Family Welcome Center.', 'Reúne documentos de inscripción.', 'Reserva cita o entrega los formularios que pidan.'],
+      'Find a Doctor': ['Revisa si calificas para NYC Care u otra opción económica.', 'Llama o solicita tu primera cita.', 'Lleva identificación, prueba de domicilio e ingresos si los tienes.'],
+      'Get a MetroCard / OMNY': ['Elige OMNY o compra una MetroCard en una estación.', 'Revisa si calificas para tarifa reducida o Fair Fares.', 'Configura el método de pago que mejor te convenga.'],
+      'Apply for an ITIN': ['Completa el Formulario W-7 del IRS.', 'Adjunta los documentos y la declaración de impuestos requeridos.', 'Envía tu solicitud por correo o en un sitio VITA o agente autorizado.'],
+      'Need Help with Taxes?': ['Verifica si calificas según tus ingresos y tu tipo de declaración.', 'Reúne W-2, 1099, identificación y cualquier documento fiscal que tengas.', 'Elige presentación en persona, entrega o en línea y reserva un sitio.'],
     },
     resource_descs: {
       'Make the Road New York': 'Servicios legales gratuitos, clases de ESL, ayuda con derechos laborales y organización comunitaria.',
@@ -227,21 +240,25 @@ const translations = {
     cat_jobs: '工作',
     checklist_title: '刚到吗？先从这里开始',
     step1: '获取身份证 / CityKey',
-    step2: '开设银行账户',
+    step2: '申请工作',
     step3: '给孩子报名上学',
     step4: '找一位医生',
     step5: '获取 MetroCard / OMNY',
     step6: '申请 ITIN',
+    step7: '需要税务帮助吗？',
     resources_title: '资源目录',
     rights_title: '了解你的权利',
     transport_title: '在皇后区出行',
+    mayor_title: 'Mayor News',
+    mayor_subtitle: '来自市政厅的官方更新，包括公告、行动和政策变化。',
     checklist_descs: {
       'Get an ID / CityKey': 'NYC ID 卡向所有居民开放，不论身份如何。前往注册中心办理。',
-      'Open a Bank Account': '许多银行接受 ITIN 或外国证件。Capital One 和 Chase 在皇后区各地都有网点。',
+      'Apply for Jobs': '使用 NYC Jobs 和 Workforce1 搜索职位、获取简历帮助并连接免费就业服务。',
       'Enroll Kids in School': '所有儿童都有权就读纽约市公立学校。前往你附近的 Family Welcome Center。',
       'Find a Doctor': 'NYC H+H 医院为所有人提供服务，不论保险或移民身份。可申请 NYC Care。',
       'Get a MetroCard / OMNY': '可刷手机或在地铁站购买卡片。符合条件者可享受优惠票价。',
       'Apply for an ITIN': 'ITIN 可用于报税和开设银行账户。可前往 VITA 网点获取免费帮助。',
+      'Need Help with Taxes?': 'NYC Free Tax Prep 提供免费的报税帮助，由 IRS 认证的 VITA/TCE 志愿者在全市各地提供服务，包括皇后区。',
     },
     rights_descs: {
       'If ICE Comes to Your Door': '你有权不打开门。要求查看由法官签署的令状。你有权保持沉默并要求律师。',
@@ -253,6 +270,15 @@ const translations = {
       Bus: 'Transit 可以实时追踪公交和地铁。官方路线查询请使用 MTA Bus Time。',
       OMNY: 'OMNY 是 MTA 的刷卡支付系统，适用于地铁和公交。符合条件者可能享受优惠票价或 Fair Fares。',
       'Citi Bike': 'Citi Bike 是纽约市官方共享单车系统，在皇后区有很多站点。',
+    },
+    checklist_guides: {
+      'Get an ID / CityKey': ['准备好身份证明和纽约居住证明。', '预约 IDNYC 或寻找可直接到访地点。', '带齐文件并完成申请。'],
+      'Apply for Jobs': ['制作一份基础简历并保存为 PDF。', '在 NYC Jobs 和 Workforce1 上创建账户。', '搜索职位、参加讲座，并申请适合你经验的工作。'],
+      'Enroll Kids in School': ['找到你所属学区学校或 Family Welcome Center。', '准备注册所需文件。', '预约或提交学校要求的表格。'],
+      'Find a Doctor': ['查看你是否符合 NYC Care 或其他低成本方案。', '打电话或申请首次就诊。', '带上身份证、住址证明和收入证明（如有）。'],
+      'Get a MetroCard / OMNY': ['选择 OMNY 或在车站购买 MetroCard。', '查看你是否符合优惠票价或 Fair Fares。', '设置最适合你通勤的支付方式。'],
+      'Apply for an ITIN': ['填写 IRS W-7 表格。', '附上所需文件和税表。', '通过邮寄、VITA 或授权代理提交申请。'],
+      'Need Help with Taxes?': ['根据收入和申报状态确认是否符合资格。', '准备 W-2、1099、身份证和任何税务文件。', '选择现场、递交或线上申报，并预约服务点。'],
     },
     resource_descs: {
       'Make the Road New York': '提供免费法律服务、ESL 课程、劳工权益帮助和社区组织支持。',
@@ -288,21 +314,25 @@ const translations = {
     cat_jobs: '일자리',
     checklist_title: '막 도착했나요? 여기서 시작하세요',
     step1: '신분증 / CityKey 받기',
-    step2: '은행 계좌 열기',
+    step2: '일자리 찾기',
     step3: '아이 학교 등록하기',
     step4: '의사 찾기',
     step5: 'MetroCard / OMNY 받기',
     step6: 'ITIN 신청하기',
+    step7: '세금 도움이 필요하신가요?',
     resources_title: '자원 안내',
     rights_title: '권리 안내',
     transport_title: '퀸즈 이동 방법',
+    mayor_title: 'Mayor News',
+    mayor_subtitle: '시장실의 공식 공지와 정책 변화 업데이트입니다.',
     checklist_descs: {
       'Get an ID / CityKey': 'NYC ID 카드는 신분과 상관없이 모든 주민에게 제공됩니다. 등록 센터를 방문하세요.',
-      'Open a Bank Account': '많은 은행이 ITIN 또는 외국 신분증을 स्वीकार합니다. Capital One과 Chase 지점이 퀸즈 전역에 있습니다.',
+      'Apply for Jobs': 'NYC Jobs와 Workforce1을 사용해 채용 공고를 찾고, 이력서 도움을 받고, 무료 취업 서비스를 연결하세요.',
       'Enroll Kids in School': '모든 아이들은 NYC 공립학교에 다닐 권리가 있습니다. 가까운 Family Welcome Center를 방문하세요.',
       'Find a Doctor': 'NYC H+H 병원은 보험이나 이민 신분과 상관없이 모두를 진료합니다. NYC Care를 신청할 수 있습니다.',
       'Get a MetroCard / OMNY': '휴대폰을 태그하거나 지하철역에서 카드를 구매하세요. 자격이 되면 할인 요금이 가능합니다.',
       'Apply for an ITIN': 'ITIN은 세금 신고와 은행 계좌 개설에 사용할 수 있습니다. 무료 도움은 VITA 사이트를 방문하세요.',
+      'Need Help with Taxes?': 'NYC Free Tax Prep은 Queens를 포함한 시 전역에서 IRS 인증 VITA/TCE 자원봉사자가 무료 세금 신고를 돕습니다.',
     },
     rights_descs: {
       'If ICE Comes to Your Door': '문을 열지 않을 권리가 있습니다. 판사가 서명한 영장을 보여 달라고 하세요. 침묵할 권리와 변호사를 요청할 권리가 있습니다.',
@@ -314,6 +344,15 @@ const translations = {
       Bus: 'Transit은 버스와 열차를 실시간으로 추적합니다. 공식 노선 조회는 MTA Bus Time을 사용하세요.',
       OMNY: 'OMNY는 MTA의 터치 결제 시스템으로 지하철과 버스에 사용됩니다. 자격에 따라 할인 요금이나 Fair Fares를 이용할 수 있습니다.',
       'Citi Bike': 'Citi Bike는 퀸즈 전역에 정류장이 있는 뉴욕시 공식 공유 자전거 시스템입니다.',
+    },
+    checklist_guides: {
+      'Get an ID / CityKey': ['신분증과 NYC 거주 증빙을 준비하세요.', 'IDNYC 예약을 하거나 워크인 장소를 찾으세요.', '서류를 가지고 신청을 완료하세요.'],
+      'Apply for Jobs': ['기본 이력서를 만들고 PDF로 저장하세요.', 'NYC Jobs와 Workforce1 계정을 만드세요.', '채용 공고를 찾고, 워크숍에 참석하고, 경험에 맞는 일자리에 지원하세요.'],
+      'Enroll Kids in School': ['학군 학교나 Family Welcome Center를 찾으세요.', '등록에 필요한 서류를 준비하세요.', '예약하거나 학교가 요구하는 서류를 제출하세요.'],
+      'Find a Doctor': ['NYC Care 또는 다른 저비용 옵션 자격을 확인하세요.', '전화하거나 첫 진료를 신청하세요.', '신분증, 주소 증명, 소득 증빙이 있으면 가져가세요.'],
+      'Get a MetroCard / OMNY': ['OMNY를 선택하거나 역에서 MetroCard를 구매하세요.', '할인 요금이나 Fair Fares 자격을 확인하세요.', '출퇴근에 가장 맞는 결제 방식을 설정하세요.'],
+      'Apply for an ITIN': ['IRS W-7 양식을 작성하세요.', '요구되는 서류와 세금 신고서를 첨부하세요.', '우편, VITA, 또는 승인된 대행자를 통해 제출하세요.'],
+      'Need Help with Taxes?': ['소득과 신고 상태에 따라 자격이 되는지 확인하세요.', 'W-2, 1099, 신분증 및 세금 서류를 준비하세요.', '대면, 드롭오프, 온라인 신고 중 선택하고 장소를 예약하세요.'],
     },
     resource_descs: {
       'Make the Road New York': '무료 법률 서비스, ESL 수업, 노동권 지원, 커뮤니티 조직 활동을 제공합니다.',
@@ -349,21 +388,25 @@ const translations = {
     cat_jobs: 'চাকরি',
     checklist_title: 'নতুন এসেছেন? এখান থেকে শুরু করুন',
     step1: 'আইডি / CityKey নিন',
-    step2: 'ব্যাংক অ্যাকাউন্ট খুলুন',
+    step2: 'চাকরি খুঁজুন',
     step3: 'শিশুদের স্কুলে ভর্তি করুন',
     step4: 'ডাক্তার খুঁজুন',
     step5: 'MetroCard / OMNY নিন',
     step6: 'ITIN আবেদন করুন',
+    step7: 'ট্যাক্সে সাহায্য লাগবে?',
     resources_title: 'রিসোর্স ডিরেক্টরি',
     rights_title: 'আপনার অধিকার জানুন',
     transport_title: 'কুইন্সে চলাফেরা',
+    mayor_title: 'Mayor News',
+    mayor_subtitle: 'সিটি হল থেকে অফিসিয়াল আপডেট, ঘোষণা এবং নীতিগত পরিবর্তন।',
     checklist_descs: {
       'Get an ID / CityKey': 'NYC ID কার্ড স্ট্যাটাস নির্বিশেষে সব বাসিন্দার জন্য উপলভ্য। রেজিস্ট্রেশন সেন্টারে যান।',
-      'Open a Bank Account': 'অনেক ব্যাংক ITIN বা বিদেশি আইডি গ্রহণ করে। Capital One ও Chase-এর শাখা পুরো Queens জুড়ে আছে।',
+      'Apply for Jobs': 'NYC Jobs এবং Workforce1 ব্যবহার করে চাকরির সুযোগ খুঁজুন, রিজুমে সাহায্য নিন, এবং বিনামূল্যে কর্মসংস্থান সেবার সাথে যুক্ত হন।',
       'Enroll Kids in School': 'সব শিশুর NYC পাবলিক স্কুলে পড়ার অধিকার আছে। আপনার নিকটস্থ Family Welcome Center-এ যান।',
       'Find a Doctor': 'NYC H+H হাসপাতাল বীমা বা অভিবাসন স্ট্যাটাস নির্বিশেষে সবাইকে সেবা দেয়। NYC Care-এর জন্য আবেদন করতে পারেন।',
       'Get a MetroCard / OMNY': 'ফোন ট্যাপ করুন বা যেকোনো সাবওয়ে স্টেশনে কার্ড কিনুন। যোগ্য হলে কম ভাড়া পাওয়া যায়।',
       'Apply for an ITIN': 'ITIN দিয়ে ট্যাক্স ফাইল করা ও ব্যাংক অ্যাকাউন্ট খোলা যায়। বিনামূল্যে সাহায্যের জন্য VITA সাইটে যান।',
+      'Need Help with Taxes?': 'NYC Free Tax Prep সারা শহরে, Queens-সহ, IRS-সার্টিফায়েড VITA/TCE স্বেচ্ছাসেবকদের মাধ্যমে বিনামূল্যে ট্যাক্স ফাইল করতে সাহায্য করে।',
     },
     rights_descs: {
       'If ICE Comes to Your Door': 'দরজা না খোলার অধিকার আপনার আছে। বিচারকের স্বাক্ষরিত ওয়ারেন্ট দেখতে চান। আপনার নীরব থাকার এবং আইনজীবী পাওয়ার অধিকার আছে।',
@@ -375,6 +418,15 @@ const translations = {
       Bus: 'Transit রিয়েল-টাইমে বাস ও ট্রেন ট্র্যাক করে। অফিসিয়াল রুট দেখার জন্য MTA Bus Time ব্যবহার করুন।',
       OMNY: 'OMNY হলো MTA-এর ট্যাপ-টু-পে সিস্টেম, যা সাবওয়ে ও বাসে ব্যবহৃত হয়। যোগ্যতার ভিত্তিতে কম ভাড়া বা Fair Fares পাওয়া যেতে পারে।',
       'Citi Bike': 'Citi Bike হলো শহরের অফিসিয়াল বাইক শেয়ার সিস্টেম, Queens জুড়ে স্টেশন রয়েছে।',
+    },
+    checklist_guides: {
+      'Get an ID / CityKey': ['পরিচয় ও NYC বাসস্থানের প্রমাণ সংগ্রহ করুন।', 'IDNYC অ্যাপয়েন্টমেন্ট নিন বা ওয়াক-ইন সাইট খুঁজুন।', 'ডকুমেন্ট নিয়ে আবেদন সম্পন্ন করুন।'],
+      'Apply for Jobs': ['একটি সহজ রিজুমে তৈরি করে PDF হিসেবে সংরক্ষণ করুন।', 'NYC Jobs এবং Workforce1-এ অ্যাকাউন্ট খুলুন।', 'চাকরি খুঁজুন, ওয়ার্কশপে যান, এবং আপনার অভিজ্ঞতার সাথে মানানসই কাজে আবেদন করুন।'],
+      'Enroll Kids in School': ['আপনার zoned school বা Family Welcome Center খুঁজুন।', 'ভর্তি ডকুমেন্ট প্রস্তুত করুন।', 'অ্যাপয়েন্টমেন্ট নিন বা ফর্ম জমা দিন।'],
+      'Find a Doctor': ['NYC Care বা অন্য কম খরচের বিকল্পের যোগ্যতা দেখুন।', 'ফোন করুন বা প্রথম অ্যাপয়েন্টমেন্ট আবেদন করুন।', 'আইডি, ঠিকানার প্রমাণ ও আয়ের কাগজ থাকলে নিয়ে যান।'],
+      'Get a MetroCard / OMNY': ['OMNY বেছে নিন বা স্টেশন থেকে MetroCard কিনুন।', 'ছাড়ের ভাড়া বা Fair Fares-এর যোগ্যতা দেখুন।', 'আপনার যাতায়াতের জন্য উপযুক্ত পেমেন্ট পদ্ধতি সেট করুন।'],
+      'Apply for an ITIN': ['IRS W-7 ফর্ম পূরণ করুন।', 'প্রয়োজনীয় ডকুমেন্ট ও ট্যাক্স রিটার্ন যুক্ত করুন।', 'মেইল, VITA, বা অনুমোদিত এজেন্টের মাধ্যমে জমা দিন।'],
+      'Need Help with Taxes?': ['আয় এবং ফাইলিং স্ট্যাটাস অনুযায়ী আপনি যোগ্য কি না দেখুন।', 'W-2, 1099, আইডি, এবং যেকোনো ট্যাক্স ডকুমেন্ট জোগাড় করুন।', 'ইন-পার্সন, ড্রপ-অফ, বা অনলাইন ফাইলিং বেছে নিয়ে একটি সাইট বুক করুন।'],
     },
     resource_descs: {
       'Make the Road New York': 'বিনামূল্যে আইনি সেবা, ESL ক্লাস, শ্রমিক অধিকার সহায়তা এবং কমিউনিটি সংগঠনের কাজ করে।',
@@ -404,26 +456,81 @@ const checklist = [
   {
     title: 'Get an ID / CityKey',
     desc: 'NYC ID card available to all residents regardless of status. Visit an enrollment center.',
+    guide: [
+      'Gather proof of identity and NYC residency.',
+      'Schedule an IDNYC appointment or find a walk-in site.',
+      'Bring your documents and complete the application.',
+    ],
+    links: [{ label: 'Apply for IDNYC', url: 'https://www.nyc.gov/site/idnyc/index.page' }],
   },
   {
-    title: 'Open a Bank Account',
-    desc: 'Many banks accept ITIN or foreign ID. Capital One and Chase have branches throughout Queens.',
+    title: 'Apply for Jobs',
+    desc: 'Use NYC Jobs and Workforce1 to search listings, get resume help, and connect to free job services.',
+    guide: [
+      'Make a basic resume and save it as a PDF.',
+      'Create accounts on NYC Jobs and Workforce1.',
+      'Search for roles, attend workshops, and apply to jobs that match your experience.',
+    ],
+    links: [
+      { label: 'NYC Jobs', url: 'https://jobs.nyc.gov/' },
+      { label: 'Workforce1 Career Centers', url: 'https://www.nyc.gov/workforce1' },
+    ],
   },
   {
     title: 'Enroll Kids in School',
     desc: 'All children have the right to attend NYC public schools. Visit your local Family Welcome Center.',
+    guide: [
+      'Find your zoned school or a nearby Family Welcome Center.',
+      'Gather enrollment documents like proof of age, address, and immunization records.',
+      'Book an appointment or submit the forms the school asks for.',
+    ],
+    links: [{ label: 'Family Welcome Centers', url: 'https://www.schools.nyc.gov/enrollment/enrollment-help/family-welcome-centers' }],
   },
   {
     title: 'Find a Doctor',
     desc: 'NYC H+H hospitals serve everyone regardless of insurance or immigration status. Apply for NYC Care.',
+    guide: [
+      'Check whether you qualify for NYC Care or another low-cost option.',
+      'Call or apply through the program to set up your first visit.',
+      'Bring ID, proof of NYC address, and any income documents if you have them.',
+    ],
+    links: [{ label: 'NYC Care', url: 'https://access.nyc.gov/programs/nyc-care/' }],
   },
   {
     title: 'Get a MetroCard / OMNY',
     desc: 'Tap your phone or buy a card at any subway station. Reduced fare available for qualifying residents.',
+    guide: [
+      'Choose OMNY tap-to-pay or buy a MetroCard at a station.',
+      'If you think you qualify, review reduced-fare and Fair Fares eligibility.',
+      'Set up the payment method that works best for your commute.',
+    ],
+    links: [
+      { label: 'OMNY', url: 'https://www.mta.info/fares/omny' },
+      { label: 'Reduced Fare', url: 'https://www.mta.info/fares/reduced-fare' },
+    ],
   },
   {
     title: 'Apply for an ITIN',
     desc: 'Individual Taxpayer Identification Number lets you file taxes and open bank accounts. Visit a VITA site for free help.',
+    guide: [
+      'Complete IRS Form W-7.',
+      'Attach the documents and tax return the IRS asks for.',
+      'Submit by mail or in person through an IRS acceptance agent or VITA site.',
+    ],
+    links: [{ label: 'How to apply for an ITIN', url: 'https://www.irs.gov/tin/itin/how-to-apply-for-an-itin' }],
+  },
+  {
+    title: 'Need Help with Taxes?',
+    desc: 'NYC Free Tax Prep offers free filing help from IRS-certified VITA/TCE volunteers across the city, including Queens.',
+    guide: [
+      'Check whether you qualify based on income and filing status.',
+      'Gather W-2s, 1099s, ID, and any tax documents you have.',
+      'Choose in-person, drop-off, or virtual filing and book a site.',
+    ],
+    links: [
+      { label: 'NYC Free Tax Prep', url: 'https://access.nyc.gov/programs/nyc-free-tax-prep/' },
+      { label: 'Find a tax site', url: 'https://www.nyc.gov/site/dca/talk-money/file-your-taxes.page' },
+    ],
   },
 ];
 
@@ -445,6 +552,33 @@ const rights = [
     desc: 'All workers have rights regardless of immigration status: minimum wage, safe conditions, and the right to report violations without retaliation.',
     phone: 'DOL: 888-4-NYSDOL',
     url: 'https://dol.ny.gov/labor-standards-0',
+  },
+];
+
+const mamdaniNews = [
+  {
+    date: 'April 21, 2026',
+    title: 'Mamdani Administration Announces New Bus Lanes, Infrastructure Upgrades Along Linden Boulevard',
+    summary: 'City Hall said the project will speed up buses and improve safety along a major Brooklyn corridor.',
+    url: 'https://www.nyc.gov/site/hpd/news/024-26/mamdani-administration-new-bus-lanes-infrastructure-upgrades-linden-boulevard-to',
+  },
+  {
+    date: 'April 9, 2026',
+    title: 'Mayor Mamdani Announces 2-K Will Be Full-Day and Full-Year',
+    summary: 'The administration announced a move to expand 2-K into a full-day, full-year schedule for many seats.',
+    url: 'https://www.nyc.gov/mayors-office/news/2026/04/mayor-mamdani-announces-2-k-will-be-full-day-and-full-year',
+  },
+  {
+    date: 'March 20, 2026',
+    title: 'Mayor Mamdani Appoints Richard Lee as Commissioner of the Department of Finance',
+    summary: 'The mayor appointed a new Finance commissioner to oversee tax collection and city revenue operations.',
+    url: 'https://www.nyc.gov/mayors-office/news/2026/03/mayor-mamdani-appoints-richard-lee-as-commissioner-of-the-depart',
+  },
+  {
+    date: 'April 10, 2026',
+    title: 'Municipal Madness: Mayor Mamdani Performs Winning City Fix, Cleans Up Illegal Dumping in Soundview on Day 100',
+    summary: 'An official mayoral update highlighting cleanup work and city operations during the first 100 days.',
+    url: 'https://www.nyc.gov/DemocracyNYC',
   },
 ];
 
@@ -502,6 +636,7 @@ function App() {
   const [language, setLanguage] = useState('en');
   const [filter, setFilter] = useState('all');
   const [query, setQuery] = useState('');
+  const [openChecklist, setOpenChecklist] = useState(() => []);
   const [done, setDone] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem('queens-checklist') || '[]');
@@ -517,6 +652,7 @@ function App() {
   const copy = translations[language] || {};
   const resourceDescs = copy.resource_descs || {};
   const checklistDescs = copy.checklist_descs || {};
+  const checklistGuides = copy.checklist_guides || {};
   const rightsDescs = copy.rights_descs || {};
   const transportDescs = copy.transport_descs || {};
   const filteredResources = resources.filter((resource) => {
@@ -535,6 +671,15 @@ function App() {
 
   const toggleDone = (index) => {
     setDone((current) => {
+      const next = new Set(current);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return [...next];
+    });
+  };
+
+  const toggleChecklistOpen = (index) => {
+    setOpenChecklist((current) => {
       const next = new Set(current);
       if (next.has(index)) next.delete(index);
       else next.add(index);
@@ -612,12 +757,52 @@ function App() {
           <ul className="checklist">
             {checklist.map((step, index) => {
               const isDone = done.includes(index);
+              const isOpen = openChecklist.includes(index);
               return (
-                <li key={step.title} className={isDone ? 'done' : ''} onClick={() => toggleDone(index)}>
+                <li key={step.title} className={`${isDone ? 'done' : ''} ${isOpen ? 'open' : ''}`}>
                   <div className="check" aria-hidden="true">{isDone ? '✓' : ''}</div>
-                  <div>
-                    <div className="step-title">{copy[`step${index + 1}`] || step.title}</div>
-                    <div className="step-desc">{checklistDescs[step.title] || step.desc}</div>
+                  <div className="checklist-body">
+                    <div className="checklist-head">
+                      <button
+                        type="button"
+                        className="step-toggle"
+                        onClick={() => toggleChecklistOpen(index)}
+                      >
+                        <span className="step-title">{copy[`step${index + 1}`] || step.title}</span>
+                        <span className="step-toggle-label">{isOpen ? 'Hide steps' : 'Show steps'}</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="check-toggle"
+                        onClick={() => toggleDone(index)}
+                        aria-label={isDone ? 'Mark step incomplete' : 'Mark step complete'}
+                      >
+                        {isDone ? 'Completed' : 'Mark complete'}
+                      </button>
+                    </div>
+                    {isOpen ? (
+                      <>
+                        <div className="step-desc">{checklistDescs[step.title] || step.desc}</div>
+                        <ol className="step-guide">
+                          {(checklistGuides[step.title] || step.guide || []).map((line) => (
+                            <li key={line}>{line}</li>
+                          ))}
+                        </ol>
+                        <div className="step-links">
+                          {(step.links || []).map((link) => (
+                            <a
+                              key={link.url}
+                              href={link.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              onClick={(event) => event.stopPropagation()}
+                            >
+                              {link.label}
+                            </a>
+                          ))}
+                        </div>
+                      </>
+                    ) : null}
                   </div>
                 </li>
               );
@@ -722,6 +907,24 @@ function App() {
           <p className="transport-note">
             Transfers are encoded when you tap the same card or device. With OMNY or a Pay-Per-Ride MetroCard, you get one free transfer within two hours between subway and bus, bus and subway, or bus and bus. If you switch to an express bus, you pay the difference unless you have an express-bus unlimited option. Reduced-fare and Fair Fares programs may offer discounts if you qualify.
           </p>
+        </section>
+
+        <section className="section" id="mayor-news">
+          <div className="section-header">
+            <h3>{copy.mayor_title || 'Mayor News'}</h3>
+          </div>
+          <p className="news-note">
+            {copy.mayor_subtitle || 'Official updates from City Hall about announcements, actions, and policy changes.'}
+          </p>
+          <div className="news-grid">
+            {mamdaniNews.map((item) => (
+              <a key={item.url} className="news-card" href={item.url} target="_blank" rel="noreferrer">
+                <span className="news-date">{item.date}</span>
+                <h4>{item.title}</h4>
+                <p>{item.summary}</p>
+              </a>
+            ))}
+          </div>
         </section>
       </main>
 

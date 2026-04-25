@@ -339,7 +339,7 @@ button {
   margin: 0;
 }
 
-.checklist li {
+.checklist > li {
   background: var(--white);
   padding: 1rem 1.25rem;
   margin-bottom: 0.5rem;
@@ -348,10 +348,68 @@ button {
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.checklist-body {
+  flex: 1 1 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.checklist-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  flex-wrap: nowrap;
+}
+
+.step-toggle,
+.check-toggle {
+  border: none;
+  background: transparent;
+  padding: 0;
+  text-align: left;
+}
+
+.step-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex: 1 1 auto;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.step-toggle-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--light-blue);
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.check-toggle {
+  flex: 0 0 auto;
+  padding-top: 0.1rem;
+  white-space: nowrap;
+  color: var(--light-blue);
+  font-size: 0.8rem;
+  font-weight: 600;
   cursor: pointer;
 }
 
-.checklist li .check {
+.check-toggle:focus-visible,
+.step-toggle:focus-visible {
+  outline: 2px solid var(--light-blue);
+  outline-offset: 2px;
+}
+
+.checklist > li .check {
   width: 22px;
   height: 22px;
   border: 2px solid #ccc;
@@ -365,15 +423,19 @@ button {
   font-size: 0.8rem;
 }
 
-.checklist li.done .check {
+.checklist > li.done .check {
   background: var(--green);
   border-color: var(--green);
   color: white;
 }
 
-.checklist li.done .step-title {
+.checklist > li.done .step-title {
   text-decoration: line-through;
   opacity: 0.6;
+}
+
+.checklist > li.open {
+  border-left: 4px solid var(--light-blue);
 }
 
 .step-title {
@@ -385,6 +447,33 @@ button {
   font-size: 0.8rem;
   color: #777;
   margin-top: 0.15rem;
+}
+
+.step-guide {
+  margin: 0;
+  padding-left: 1.15rem;
+  color: #555;
+  font-size: 0.82rem;
+}
+
+.step-guide li {
+  margin: 0.1rem 0;
+}
+
+.step-links {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.step-links a {
+  color: var(--light-blue);
+  font-size: 0.82rem;
+  text-decoration: none;
+}
+
+.step-links a:hover {
+  text-decoration: underline;
 }
 
 .rights-grid {
@@ -486,6 +575,56 @@ button {
   color: #555;
   max-width: 70ch;
   text-align: center;
+}
+
+.news-note {
+  margin: 0 0 1rem;
+  max-width: 75ch;
+  font-size: 0.92rem;
+  color: #555;
+}
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0.75rem;
+}
+
+.news-card {
+  background: var(--white);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 1rem 1.1rem;
+  text-decoration: none;
+  color: var(--dark);
+  border-left: 4px solid var(--light-blue);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.news-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.news-date {
+  display: inline-block;
+  margin-bottom: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--light-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.news-card h4 {
+  margin: 0 0 0.35rem;
+  font-size: 0.98rem;
+}
+
+.news-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #555;
 }
 
 .footer {
