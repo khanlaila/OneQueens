@@ -19,6 +19,7 @@ Environment variables:
 from __future__ import annotations
 
 import json
+import logging
 import os
 import sys
 from typing import Any
@@ -28,18 +29,21 @@ from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from openai import OpenAI
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
 
-DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY")
-DEEPSEEK_MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-reasoner")
+DEEPSEEK_API_KEY = os.environ.get("NOVITA_API_KEY")
+DEEPSEEK_MODEL = os.environ.get("DEEPSEEK_MODEL", "openai/gpt-oss-120b")
 SEARXNG_BASE_URL = os.environ.get("SEARXNG_BASE_URL", "https://act.search.seoul.st")
 HOST = os.environ.get("HOST", "0.0.0.0")
 PORT = int(os.environ.get("PORT", "8000"))
 
 if not DEEPSEEK_API_KEY:
-    print("ERROR: DEEPSEEK_API_KEY environment variable is required.", file=sys.stderr)
+    print("ERROR: NOVITA_API_KEY environment variable is required.", file=sys.stderr)
     sys.exit(1)
 
 # ---------------------------------------------------------------------------
@@ -48,7 +52,7 @@ if not DEEPSEEK_API_KEY:
 
 client = OpenAI(
     api_key=DEEPSEEK_API_KEY,
-    base_url="https://api.deepseek.com",
+    base_url="https://api.novita.ai/openai",
 )
 
 # ---------------------------------------------------------------------------
@@ -81,7 +85,7 @@ WEB_SEARCH_TOOL: dict[str, Any] = {
 
 TOOLS = [WEB_SEARCH_TOOL]
 
-SYSTEM_PROMPT = """You are an AI assistant for the Queens Resource Navigator, a website helping newly arrived immigrants find resources in Queens, NYC.
+SYSTEM_PROMPT_TOOLS = """You are an AI assistant for the Queens Resource Navigator, a website helping newly arrived immigrants find resources in Queens, NYC.
 
 ## Your role
 - Help users find legal aid, ESL classes, healthcare, food assistance, housing help, and employment services.
@@ -90,9 +94,30 @@ SYSTEM_PROMPT = """You are an AI assistant for the Queens Resource Navigator, a 
 - Provide phone numbers, addresses, and specific actionable details when available.
 
 ## Web search
-- Use the `web_search` tool whenever you need current information — hours, eligibility rules, locations, recent policy changes.
+- You have access to the `web_search` tool. Use it whenever you need current information — hours, eligibility rules, locations, recent policy changes.
 - When you use search results, cite them inline (e.g. "according to NYC.gov...").
 - The database of local organizations is in your training data (Make the Road NY, Catholic Charities, MinKwon Center, Chhaya CDC, Adhikaar, etc.). Use web_search to confirm or supplement details.
+- Once you have enough information, answer the user directly. Do not keep searching indefinitely.
+
+## Tone
+- Reassuring and practical. Newcomers are often stressed and confused.
+- Never share or ask for immigration status information. Remind users their info is private.
+- If the user's question is too vague, ask clarifying questions (neighborhood, language, cost preference).
+"""
+
+SYSTEM_PROMPT_ANSWER = """You are an AI assistant for the Queens Resource Navigator, a website helping newly arrived immigrants find resources in Queens, NYC.
+
+## Your role
+- Help users find legal aid, ESL classes, healthcare, food assistance, housing help, and employment services.
+- Be warm, clear, and specific. Assume the user may be unfamiliar with US systems and bureaucracy.
+- If the user writes in a language other than English, respond in that language.
+- Provide phone numbers, addresses, and specific actionable details when available.
+
+## Using provided context
+- Below the user's question you will find a <context> block with search results. Use those results to answer accurately.
+- Cite sources based on the id listed per source, e.g. `<source id="n"` with the format `[1]` directly after the corresponding section.
+- Do not mention that you performed a web search. Simply answer using the facts provided.
+- If the context does not contain enough information, answer based on your knowledge, but be honest when you are uncertain.
 
 ## Tone
 - Reassuring and practical. Newcomers are often stressed and confused.
@@ -147,17 +172,6 @@ def check_searxng() -> bool:
 app = Flask(__name__)
 CORS(app)
 
-# Map file extensions to MIME types for send_from_directory
-MIME_TYPES = {
-    ".html": "text/html",
-    ".css": "text/css",
-    ".js": "application/javascript",
-    ".json": "application/json",
-    ".png": "image/png",
-    ".jpg": "image/jpeg",
-    ".svg": "image/svg+xml",
-}
-
 
 # ---- OpenAI-compatible proxy endpoint -----------------------------------
 
@@ -174,19 +188,19 @@ def openai_proxy():
     if "messages" not in body:
         return jsonify({"error": "messages field is required"}), 400
 
-    # Forward to DeepSeek
+    # Forward to the LLM API
     try:
         response = client.chat.completions.create(
             model=body.get("model", DEEPSEEK_MODEL),
             messages=body["messages"],
             tools=body.get("tools", TOOLS),
             tool_choice=body.get("tool_choice", "auto"),
-            temperature=body.get("temperature", 0.7),
-            max_tokens=body.get("max_tokens", 2048),
+            top_p=0.95,
             stream=body.get("stream", False),
         )
         return jsonify(json.loads(response.model_dump_json()))
     except Exception as e:
+        logger.exception("Proxy request failed")
         return jsonify({"error": str(e)}), 500
 
 
@@ -208,7 +222,7 @@ def chat():
 
     # Build message list
     messages: list[dict[str, Any]] = [
-        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "system", "content": SYSTEM_PROMPT_TOOLS},
         {"role": "user", "content": query},
     ]
 
@@ -218,65 +232,140 @@ def chat():
             model=DEEPSEEK_MODEL,
             messages=messages,
             tools=TOOLS,
+            top_p=0.95,
             tool_choice="auto",
-            temperature=0.7,
-            max_tokens=2048,
         )
+        logger.info("Raw LLM response (initial): choices=%s", response.choices)
+        if response.choices:
+            logger.info("Initial response: content=%s, tool_calls=%s, finish_reason=%s",
+                        response.choices[0].message.content,
+                        response.choices[0].message.tool_calls,
+                        response.choices[0].finish_reason)
     except Exception as e:
-        return jsonify({"error": f"DeepSeek API call failed: {e}"}), 502
+        logger.exception("LLM API call (initial) failed")
+        return jsonify({"error": f"LLM API call failed: {e}"}), 502
 
-    msg = response.choices[0].message
     final_sources: list[dict[str, str]] = []
+    MAX_TOOL_ROUNDS = 3
 
-    # --- Handle tool calls ---
-    if msg.tool_calls:
-        # Append the assistant message once (it contains all tool_calls)
-        messages.append(msg)  # type: ignore[arg-type]
+    # --- Tool-calling loop (collects search results only) ---
+    initial_answer = ""
+    for round_idx in range(MAX_TOOL_ROUNDS):
+        msg = response.choices[0].message
 
+        # If the model already answered with text and no tool calls, we can return immediately
+        if not msg.tool_calls and msg.content and msg.content.strip():
+            initial_answer = msg.content.strip()
+            logger.info("Model answered directly without tools, skipping final call")
+            break
+
+        # Stop if the model produced content (answer) and no more tool calls
+        if not msg.tool_calls:
+            break
+
+        logger.info("Round %d - Tool calls requested: %s", round_idx + 1, msg.tool_calls)
+
+        # Collect search results for this round's tool calls
+        round_results: dict[str, list[dict[str, str]]] = {}
         for tc in msg.tool_calls:
             if tc.function.name == "web_search":
                 try:
                     args = json.loads(tc.function.arguments)
                 except json.JSONDecodeError:
+                    logger.warning("Failed to parse tool call arguments, using raw query")
                     args = {"query": query}
 
-                search_results = web_search(args.get("query", query))
+                sr = web_search(args.get("query", query))
+                round_results[tc.id] = sr
+                logger.info("Search '%s' returned %d results", args.get("query", query), len(sr))
 
-                # Collect sources (skip error entries)
-                for sr in search_results:
-                    if "error" not in sr:
-                        final_sources.append(sr)
+                for item in sr:
+                    if "error" not in item:
+                        final_sources.append(item)
 
-                # Append tool result
+        # Feed results back as tool messages
+        messages.append(msg.model_dump())
+        for tc in msg.tool_calls:
+            if tc.function.name == "web_search":
                 messages.append(
                     {
                         "role": "tool",
                         "tool_call_id": tc.id,
-                        "content": json.dumps(search_results),
+                        "content": json.dumps(round_results.get(tc.id, [])),
                     }
                 )
 
-        # --- Second call: get the final answer with tool results ---
         try:
-            final = client.chat.completions.create(
+            response = client.chat.completions.create(
                 model=DEEPSEEK_MODEL,
                 messages=messages,
-                temperature=0.7,
-                max_tokens=2048,
+                tools=TOOLS,
+                top_p=0.95,
+                tool_choice="auto",
             )
-            final_answer = final.choices[0].message.content or ""
+            if response.choices:
+                choice = response.choices[0]
+                content_preview = (choice.message.content or "")[:100]
+                logger.info("Round %d follow-up: finish_reason=%s, content_preview=%r, has_tool_calls=%s",
+                            round_idx + 1, choice.finish_reason, content_preview, bool(choice.message.tool_calls))
         except Exception as e:
-            return jsonify({"error": f"DeepSeek API call failed: {e}"}), 502
-    else:
-        # No tool call needed — use the first response directly
-        final_answer = msg.content or ""
+            logger.exception("LLM API call (follow-up) failed")
+            return jsonify({"error": f"LLM API call failed: {e}"}), 502
 
-    return jsonify(
-        {
-            "response": final_answer,
-            "sources": final_sources,
-        }
-    )
+    if initial_answer:
+        result = {"response": initial_answer, "sources": final_sources}
+        return jsonify(result)
+
+
+    # --- Build a clean final prompt with search results as <context> ---
+    if final_sources:
+        source_blocks = []
+        for i, src in enumerate(final_sources, 1):
+            source_blocks.append(
+                f'<source id="{i}">\n'
+                f'  <title>{src["title"]}</title>\n'
+                f'  <url>{src["url"]}</url>\n'
+                f'  <content>{src["content"]}</content>\n'
+                f'</source>'
+            )
+        context_block = "<context>\n" + "\n".join(source_blocks) + "\n</context>"
+        final_messages = [
+            {"role": "system", "content": SYSTEM_PROMPT_ANSWER},
+            {"role": "user", "content": f"{query}\n\n{context_block}"},
+        ]
+    else:
+        final_messages = [
+            {"role": "system", "content": SYSTEM_PROMPT_ANSWER},
+            {"role": "user", "content": query},
+        ]
+
+    try:
+        final_response = client.chat.completions.create(
+            model=DEEPSEEK_MODEL,
+            messages=final_messages,
+            top_p=0.95,
+        )
+        if final_response.choices:
+            choice = final_response.choices[0]
+            final_answer = choice.message.content or ""
+            # Some reasoning models put the answer in reasoning_content
+            reasoning = getattr(choice.message, "reasoning_content", None) or ""
+            logger.info("Final response: content=%r, reasoning_content=%r, finish_reason=%s",
+                        final_answer[:200] if final_answer else final_answer,
+                        reasoning[:200] if reasoning else reasoning,
+                        choice.finish_reason)
+        else:
+            final_answer = ""
+    except Exception as e:
+        logger.exception("LLM API call (final) failed")
+        return jsonify({"error": f"LLM API call failed: {e}"}), 502
+
+    if not final_answer:
+        logger.warning("LLM returned empty response for query: %s — content and reasoning_content both empty", query)
+
+    result = {"response": final_answer, "sources": final_sources}
+    logger.info("API response: %s", result)
+    return jsonify(result)
 
 
 # ---- Config / health check ----------------------------------------------
@@ -304,10 +393,8 @@ def index():
 @app.route("/<path:path>")
 def static_files(path):
     """Serve static files from the project root."""
-    ext = os.path.splitext(path)[1]
-    mimetype = MIME_TYPES.get(ext)
     try:
-        return send_from_directory(".", path, mimetype=mimetype)
+        return send_from_directory(".", path)
     except Exception:
         return jsonify({"error": "File not found"}), 404
 
