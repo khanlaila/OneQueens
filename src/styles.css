@@ -1,4 +1,6 @@
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -19,7 +21,8 @@ html {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: var(--dark);
   background: var(--gray);
   line-height: 1.6;
@@ -186,7 +189,9 @@ button {
   padding: 1.25rem 0.75rem;
   text-align: center;
   box-shadow: var(--shadow);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
   text-decoration: none;
   color: var(--dark);
   border-top: 4px solid var(--topic-color, var(--light-blue));
@@ -620,7 +625,9 @@ button {
   color: inherit;
   text-decoration: none;
   display: block;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .transport-link:hover {
@@ -689,7 +696,9 @@ button {
   text-decoration: none;
   color: var(--dark);
   border-left: 4px solid var(--light-blue);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .news-card:hover {

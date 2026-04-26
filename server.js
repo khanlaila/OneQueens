@@ -16,12 +16,12 @@
  *   PORT                       (default: 8000)
  */
 
-import path from 'path';
-import { fileURLToPath } from 'url';
-import express from 'express';
-import cors from 'cors';
-import OpenAI from 'openai';
-import TurndownService from 'turndown';
+import path from "path";
+import { fileURLToPath } from "url";
+import express from "express";
+import cors from "cors";
+import OpenAI from "openai";
+import TurndownService from "turndown";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -30,13 +30,14 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // ---------------------------------------------------------------------------
 
 const MODEL_API_KEY = process.env.NOVITA_API_KEY;
-const CHOSEN_MODEL = process.env.DEEPSEEK_MODEL || 'google/gemma-4-31b-it';
-const SEARXNG_BASE_URL = process.env.SEARXNG_BASE_URL || 'https://act.search.seoul.st';
-const HOST = process.env.HOST || '0.0.0.0';
-const PORT = parseInt(process.env.PORT || '8000', 10);
+const CHOSEN_MODEL = process.env.DEEPSEEK_MODEL || "google/gemma-4-31b-it";
+const SEARXNG_BASE_URL =
+  process.env.SEARXNG_BASE_URL || "https://act.search.seoul.st";
+const HOST = process.env.HOST || "0.0.0.0";
+const PORT = parseInt(process.env.PORT || "8000", 10);
 
 if (!MODEL_API_KEY) {
-  console.error('ERROR: MODEL_API_KEY environment variable is required.');
+  console.error("ERROR: MODEL_API_KEY environment variable is required.");
   process.exit(1);
 }
 
@@ -46,7 +47,7 @@ if (!MODEL_API_KEY) {
 
 const client = new OpenAI({
   apiKey: MODEL_API_KEY,
-  baseURL: 'https://api.novita.ai/openai',
+  baseURL: "https://api.novita.ai/openai",
 });
 
 // ---------------------------------------------------------------------------
@@ -54,45 +55,47 @@ const client = new OpenAI({
 // ---------------------------------------------------------------------------
 
 const WEB_SEARCH_TOOL = {
-  type: 'function',
+  type: "function",
   function: {
-    name: 'web_search',
+    name: "web_search",
     description:
-      'Search the web for current, up-to-date information about ' +
-      'resources, services, policies, organizations, or any topic ' +
-      'in Queens / NYC. Use this whenever the user asks about ' +
-      'specific hours, locations, eligibility policies, recent changes, ' +
-      'or anything you are not 100% sure about.',
+      "Search the web for current, up-to-date information about " +
+      "resources, services, policies, organizations, or any topic " +
+      "in Queens / NYC. Use this whenever the user asks about " +
+      "specific hours, locations, eligibility policies, recent changes, " +
+      "or anything you are not 100% sure about.",
     parameters: {
-      type: 'object',
+      type: "object",
       properties: {
         query: {
-          type: 'string',
-          description: "The search query (e.g. 'free ESL classes Jackson Heights Queens 2026')",
+          type: "string",
+          description:
+            "The search query (e.g. 'free ESL classes Jackson Heights Queens 2026')",
         },
       },
-      required: ['query'],
+      required: ["query"],
     },
   },
 };
 
 const FETCH_WEBPAGE_TOOL = {
-  type: 'function',
+  type: "function",
   function: {
-    name: 'fetch_webpage',
+    name: "fetch_webpage",
     description:
-      'Fetch the full content of a webpage and return it as clean markdown text. ' +
-      'Use this to read a specific URL found in search results when you need ' +
-      'detailed information from the page itself (e.g. hours, eligibility, contact info).',
+      "Fetch the full content of a webpage and return it as clean markdown text. " +
+      "Use this to read a specific URL found in search results when you need " +
+      "detailed information from the page itself (e.g. hours, eligibility, contact info).",
     parameters: {
-      type: 'object',
+      type: "object",
       properties: {
         url: {
-          type: 'string',
-          description: 'The full URL of the webpage to fetch (e.g. "https://example.org/services")',
+          type: "string",
+          description:
+            'The full URL of the webpage to fetch (e.g. "https://example.org/services")',
         },
       },
-      required: ['url'],
+      required: ["url"],
     },
   },
 };
@@ -102,7 +105,7 @@ const TOOLS = [WEB_SEARCH_TOOL, FETCH_WEBPAGE_TOOL];
 const SYSTEM_PROMPT_TOOLS = `You are an AI assistant for the Queens Resource Navigator, a website helping newly arrived immigrants find resources in Queens, NYC. Respond in the same language as the user.
 
 Knowledge cutoff: January 2025
-Current date: ${new Date().toLocaleDateString('en-US')}
+Current date: ${new Date().toLocaleDateString("en-US")}
 
 ## Scope
 - Your primary focus is helping immigrants in Queens, NYC. This includes: resources, services, legal aid, ESL/language classes, healthcare, food assistance, housing, employment, education, public benefits, community organizations, navigating government systems, local policies, civic information, and elected officials' positions that affect immigrant communities.
@@ -133,7 +136,7 @@ Current date: ${new Date().toLocaleDateString('en-US')}
 const SYSTEM_PROMPT_ANSWER = `You are an AI assistant for the Queens Resource Navigator, a website helping newly arrived immigrants find resources in Queens, NYC. Respond in the same language as the user.
 
 Knowledge cutoff: January 2025
-Current date: ${new Date().toLocaleDateString('en-US')}
+Current date: ${new Date().toLocaleDateString("en-US")}
 
 ## Scope
 - Your primary focus is helping immigrants in Queens, NYC. This includes: resources, services, legal aid, ESL/language classes, healthcare, food assistance, housing, employment, education, public benefits, community organizations, navigating government systems, local policies, civic information, and elected officials' positions that affect immigrant communities.
@@ -174,12 +177,12 @@ async function webSearch(query) {
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const data = await resp.json();
     return (data.results || []).slice(0, 5).map((r) => ({
-      title: r.title || '',
-      url: r.url || '',
-      content: r.content || '',
+      title: r.title || "",
+      url: r.url || "",
+      content: r.content || "",
     }));
   } catch (e) {
-    if (e.name === 'AbortError') {
+    if (e.name === "AbortError") {
       return [{ error: `Cannot connect to SearXNG at ${SEARXNG_BASE_URL}` }];
     }
     return [{ error: `Web search failed: ${e.message}` }];
@@ -190,7 +193,9 @@ async function checkSearXNG() {
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 5000);
-    const resp = await fetch(`${SEARXNG_BASE_URL}/`, { signal: controller.signal });
+    const resp = await fetch(`${SEARXNG_BASE_URL}/`, {
+      signal: controller.signal,
+    });
     clearTimeout(timeout);
     return resp.ok;
   } catch {
@@ -203,8 +208,8 @@ async function checkSearXNG() {
 // ---------------------------------------------------------------------------
 
 const turndown = new TurndownService({
-  headingStyle: 'atx',
-  bulletListMarker: '-',
+  headingStyle: "atx",
+  bulletListMarker: "-",
 });
 
 async function fetchWebpage(url) {
@@ -214,28 +219,30 @@ async function fetchWebpage(url) {
     const resp = await fetch(url, {
       signal: controller.signal,
       headers: {
-        'User-Agent':
-          'Mozilla/5.0 (compatible; OneQueens/1.0)',
-        Accept: 'text/html,application/xhtml+xml',
+        "User-Agent": "Mozilla/5.0 (compatible; OneQueens/1.0)",
+        Accept: "text/html,application/xhtml+xml",
       },
     });
     clearTimeout(timeout);
 
     if (!resp.ok) return { error: `HTTP ${resp.status} fetching ${url}` };
 
-    const contentType = resp.headers.get('content-type') || '';
-    if (!contentType.includes('text/html') && !contentType.includes('text/plain')) {
+    const contentType = resp.headers.get("content-type") || "";
+    if (
+      !contentType.includes("text/html") &&
+      !contentType.includes("text/plain")
+    ) {
       return { error: `Unsupported content type: ${contentType}` };
     }
 
     const html = await resp.text();
     const content = turndown.turndown(html).trim().slice(0, 100000);
 
-    if (!content) return { error: 'Page content was empty after extraction' };
+    if (!content) return { error: "Page content was empty after extraction" };
 
     return { url, content };
   } catch (e) {
-    if (e.name === 'AbortError') return { error: `Timeout fetching ${url}` };
+    if (e.name === "AbortError") return { error: `Timeout fetching ${url}` };
     return { error: `Failed to fetch webpage: ${e.message}` };
   }
 }
@@ -256,22 +263,26 @@ Follow-up questions:`;
   try {
     const resp = await client.chat.completions.create({
       model: FOLLOWUP_MODEL,
-      messages: [{ role: 'user', content: prompt }],
+      messages: [{ role: "user", content: prompt }],
       max_tokens: 200,
       temperature: 0.7,
     });
-    const text = resp.choices[0].message.content || '';
+    const text = resp.choices[0].message.content || "";
     const questions = [];
-    for (const line of text.trim().split('\n')) {
+    for (const line of text.trim().split("\n")) {
       let cleaned = line.trim();
-      if (cleaned.length > 2 && cleaned[0].match(/\d/) && '.): '.includes(cleaned[1])) {
+      if (
+        cleaned.length > 2 &&
+        cleaned[0].match(/\d/) &&
+        ".): ".includes(cleaned[1])
+      ) {
         cleaned = cleaned.slice(2).trim();
       }
       if (cleaned) questions.push(cleaned);
     }
     return questions.slice(0, 3);
   } catch (e) {
-    console.error('Follow-up generation failed:', e);
+    console.error("Follow-up generation failed:", e);
     return [];
   }
 }
@@ -286,10 +297,10 @@ app.use(express.json());
 
 // ---- OpenAI-compatible proxy endpoint -----------------------------------
 
-app.post('/v1/chat/completions', async (req, res) => {
+app.post("/v1/chat/completions", async (req, res) => {
   const body = req.body;
   if (!body.messages) {
-    return res.status(400).json({ error: 'messages field is required' });
+    return res.status(400).json({ error: "messages field is required" });
   }
 
   try {
@@ -297,39 +308,36 @@ app.post('/v1/chat/completions', async (req, res) => {
       model: body.model || CHOSEN_MODEL,
       messages: body.messages,
       tools: body.tools ?? TOOLS,
-      tool_choice: body.tool_choice ?? 'auto',
+      tool_choice: body.tool_choice ?? "auto",
       top_p: 0.95,
       stream: body.stream ?? false,
     });
     res.json(response);
   } catch (e) {
-    console.error('Proxy request failed:', e);
+    console.error("Proxy request failed:", e);
     res.status(500).json({ error: e.message });
   }
 });
 
 // ---- Simplified chat endpoint (with tool-calling loop) ------------------
 
-app.post('/api/chat', async (req, res) => {
+app.post("/api/chat", async (req, res) => {
   const incoming = req.body.messages;
 
   if (!incoming || !incoming.length) {
-    return res.status(400).json({ error: 'messages field is required' });
+    return res.status(400).json({ error: "messages field is required" });
   }
 
-  const query = (incoming[incoming.length - 1].content || '').trim();
+  const query = (incoming[incoming.length - 1].content || "").trim();
   if (!query) {
-    return res.status(400).json({ error: 'latest message must have content' });
+    return res.status(400).json({ error: "latest message must have content" });
   }
 
   // Always use server's system prompt - never trust client
   const systemPrompt = SYSTEM_PROMPT_TOOLS;
 
   // Build message list: system prompt + conversation history
-  const messages = [
-    { role: 'system', content: systemPrompt },
-    ...incoming,
-  ];
+  const messages = [{ role: "system", content: systemPrompt }, ...incoming];
 
   // --- First call: let the model decide if it needs web search ---
   let response;
@@ -339,21 +347,21 @@ app.post('/api/chat', async (req, res) => {
       messages,
       tools: TOOLS,
       top_p: 0.95,
-      tool_choice: 'auto',
+      tool_choice: "auto",
     });
-    console.log('Initial response:', {
+    console.log("Initial response:", {
       content: response.choices[0].message.content?.slice(0, 100),
       hasToolCalls: !!response.choices[0].message.tool_calls,
       finishReason: response.choices[0].finish_reason,
     });
   } catch (e) {
-    console.error('LLM API call (initial) failed:', e);
+    console.error("LLM API call (initial) failed:", e);
     return res.status(502).json({ error: `LLM API call failed: ${e.message}` });
   }
 
   const finalSources = [];
   const MAX_TOOL_ROUNDS = 2;
-  let initialAnswer = '';
+  let initialAnswer = "";
 
   // --- Tool-calling loop (collects search results only) ---
   for (let roundIdx = 0; roundIdx < MAX_TOOL_ROUNDS; roundIdx++) {
@@ -362,57 +370,68 @@ app.post('/api/chat', async (req, res) => {
     // If the model already answered with text and no tool calls, return immediately
     if (!msg.tool_calls && msg.content && msg.content.trim()) {
       initialAnswer = msg.content.trim();
-      console.log('Model answered directly without tools, skipping final call');
+      console.log("Model answered directly without tools, skipping final call");
       break;
     }
 
     // Stop if no more tool calls
     if (!msg.tool_calls) break;
 
-    console.log(`Round ${roundIdx + 1} - Tool calls requested:`, msg.tool_calls.map((tc) => tc.function.name));
+    console.log(
+      `Round ${roundIdx + 1} - Tool calls requested:`,
+      msg.tool_calls.map((tc) => tc.function.name),
+    );
 
     // Collect search results for this round's tool calls
     const roundResults = {};
     for (const tc of msg.tool_calls) {
-      if (tc.function.name === 'web_search') {
+      if (tc.function.name === "web_search") {
         let args;
         try {
           args = JSON.parse(tc.function.arguments);
         } catch {
-          console.warn('Failed to parse tool call arguments, using raw query');
+          console.warn("Failed to parse tool call arguments, using raw query");
           args = { query };
         }
 
         const sr = await webSearch(args.query || query);
         roundResults[tc.id] = sr;
-        console.log(`Search '${args.query || query}' returned ${sr.length} results`);
+        console.log(
+          `Search '${args.query || query}' returned ${sr.length} results`,
+        );
 
         for (const item of sr) {
           if (!item.error) finalSources.push(item);
         }
       }
 
-      if (tc.function.name === 'fetch_webpage') {
+      if (tc.function.name === "fetch_webpage") {
         let args;
         try {
           args = JSON.parse(tc.function.arguments);
         } catch {
-          console.warn('Failed to parse fetch_webpage arguments');
+          console.warn("Failed to parse fetch_webpage arguments");
           args = {};
         }
 
-        const page = await fetchWebpage(args.url || '');
+        const page = await fetchWebpage(args.url || "");
         roundResults[tc.id] = page;
-        console.log(`Fetched webpage '${args.url}':`, page.error || `${page.content.length} chars`);
+        console.log(
+          `Fetched webpage '${args.url}':`,
+          page.error || `${page.content.length} chars`,
+        );
       }
     }
 
     // Feed results back as tool messages
     messages.push(msg);
     for (const tc of msg.tool_calls) {
-      if (tc.function.name === 'web_search' || tc.function.name === 'fetch_webpage') {
+      if (
+        tc.function.name === "web_search" ||
+        tc.function.name === "fetch_webpage"
+      ) {
         messages.push({
-          role: 'tool',
+          role: "tool",
           tool_call_id: tc.id,
           content: JSON.stringify(roundResults[tc.id] || []),
         });
@@ -425,17 +444,19 @@ app.post('/api/chat', async (req, res) => {
         messages,
         tools: TOOLS,
         top_p: 0.95,
-        tool_choice: 'auto',
+        tool_choice: "auto",
       });
       const choice = response.choices[0];
       console.log(`Round ${roundIdx + 1} follow-up:`, {
         finishReason: choice.finish_reason,
-        contentPreview: (choice.message.content || '').slice(0, 100),
+        contentPreview: (choice.message.content || "").slice(0, 100),
         hasToolCalls: !!choice.message.tool_calls,
       });
     } catch (e) {
-      console.error('LLM API call (follow-up) failed:', e);
-      return res.status(502).json({ error: `LLM API call failed: ${e.message}` });
+      console.error("LLM API call (follow-up) failed:", e);
+      return res
+        .status(502)
+        .json({ error: `LLM API call failed: ${e.message}` });
     }
   }
 
@@ -453,15 +474,15 @@ app.post('/api/chat', async (req, res) => {
         (src, i) =>
           `<source id="${i + 1}">\n  <title>${src.title}</title>\n  <url>${src.url}</url>\n  <content>${src.content}</content>\n</source>`,
       );
-      const contextBlock = `<context>\n${sourceBlocks.join('\n')}\n</context>`;
+      const contextBlock = `<context>\n${sourceBlocks.join("\n")}\n</context>`;
       finalMessages = [
-        { role: 'system', content: finalSystemPrompt },
-        { role: 'user', content: `${query}\n\n${contextBlock}` },
+        { role: "system", content: finalSystemPrompt },
+        { role: "user", content: `${query}\n\n${contextBlock}` },
       ];
     } else {
       finalMessages = [
-        { role: 'system', content: finalSystemPrompt },
-        { role: 'user', content: query },
+        { role: "system", content: finalSystemPrompt },
+        { role: "user", content: query },
       ];
     }
 
@@ -472,17 +493,19 @@ app.post('/api/chat', async (req, res) => {
         top_p: 0.95,
       });
       const choice = finalResponse.choices[0];
-      finalAnswer = choice.message.content || '';
+      finalAnswer = choice.message.content || "";
       // Some reasoning models put the answer in reasoning_content
-      const reasoning = choice.message.reasoning_content || '';
-      console.log('Final response:', {
+      const reasoning = choice.message.reasoning_content || "";
+      console.log("Final response:", {
         contentPreview: finalAnswer.slice(0, 200),
         reasoningPreview: reasoning.slice(0, 200),
         finishReason: choice.finish_reason,
       });
     } catch (e) {
-      console.error('LLM API call (final) failed:', e);
-      return res.status(502).json({ error: `LLM API call failed: ${e.message}` });
+      console.error("LLM API call (final) failed:", e);
+      return res
+        .status(502)
+        .json({ error: `LLM API call failed: ${e.message}` });
     }
   }
 
@@ -493,13 +516,13 @@ app.post('/api/chat', async (req, res) => {
   // const followups = await generateFollowups(query, finalAnswer);
 
   const result = { response: finalAnswer, sources: finalSources };
-  console.log('API response:', result);
+  console.log("API response:", result);
   res.json(result);
 });
 
 // ---- Config / health check ----------------------------------------------
 
-app.get('/api/config', async (_req, res) => {
+app.get("/api/config", async (_req, res) => {
   res.json({
     searxng_available: await checkSearXNG(),
     searxng_url: SEARXNG_BASE_URL,
@@ -509,10 +532,10 @@ app.get('/api/config', async (_req, res) => {
 
 // ---- Serve React app in production --------------------------------------
 
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, "dist")));
 
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
 // ---------------------------------------------------------------------------
@@ -524,5 +547,7 @@ app.listen(PORT, HOST, () => {
   console.log(`  Model:       ${CHOSEN_MODEL}`);
   console.log(`  Follow-ups:  (disabled)`);
   console.log(`  SearXNG:     ${SEARXNG_BASE_URL}`);
-  console.log(`  Frontend:    http://${HOST !== '0.0.0.0' ? HOST : '127.0.0.1'}:${PORT}/`);
+  console.log(
+    `  Frontend:    http://${HOST !== "0.0.0.0" ? HOST : "127.0.0.1"}:${PORT}/`,
+  );
 });
