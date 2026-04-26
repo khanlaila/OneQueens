@@ -20,7 +20,116 @@ const resources = [
     org: 'Jackson Heights',
     desc: 'Housing counseling, tenant rights education, financial literacy, and community development.',
     category: 'housing',
+    url: 'https://chhayacdc.org/',
+    phone: '718-478-3848',
     tags: ['Free', 'Bengali', 'Hindi', 'Housing'],
+  },
+  {
+    name: 'NYC Housing Connect',
+    org: 'Affordable housing lottery across the five boroughs',
+    desc: 'Affordable rentals and homeownership opportunities across all five boroughs. Income eligibility varies by lottery.',
+    category: 'housing',
+    url: 'https://www.nyc.gov/site/hpd/services-and-information/nyc-housing-connect.page',
+    phone: '212-863-7990',
+    tags: ['Free', 'Housing', 'Lottery', 'Queens'],
+  },
+  {
+    name: 'NYCHA Public Housing',
+    org: 'NYC Housing Authority',
+    desc: 'Apply for public housing through NYCHA. Applicants receive a case number and waitlist status for an eligibility interview.',
+    category: 'housing',
+    url: 'https://www.nyc.gov/site/nycha/eligibility/apply.page',
+    phone: '718-707-7771',
+    tags: ['Free', 'Housing', 'NYCHA', 'Waitlist'],
+  },
+  {
+    name: 'Section 8 / Housing Choice Voucher',
+    org: 'NYCHA / HPD / HCR',
+    desc: 'Federal rental assistance that helps eligible households pay part of the rent in the private market.',
+    category: 'housing',
+    url: 'https://access.nyc.gov/programs/section-8/',
+    phone: '917-286-4300',
+    tags: ['Free', 'Housing', 'Voucher', 'Rental Assistance'],
+  },
+  {
+    name: 'CityFHEPS',
+    org: 'NYC Department of Social Services',
+    desc: 'Rental assistance for eligible families with children and households already in shelter, helping them secure permanent housing.',
+    category: 'housing',
+    url: 'https://www.nyc.gov/site/hra/help/cityfheps.page',
+    phone: '718-557-1399',
+    tags: ['Free', 'Housing', 'Rental Assistance', 'Shelter'],
+  },
+  {
+    name: 'LINC Rental Assistance',
+    org: 'NYC Department of Social Services',
+    desc: 'Helps individuals and families move from HRA/DHS shelters into permanent housing.',
+    category: 'housing',
+    url: 'https://www.nyc.gov/site/dhs/permanency/linc-program.page',
+    phone: '718-557-1399',
+    tags: ['Free', 'Housing', 'Rental Assistance', 'Shelter'],
+  },
+  {
+    name: 'Homebase',
+    org: 'NYC HRA / DHS',
+    desc: 'Prevention services for people at imminent risk of shelter entry, including eviction prevention and housing stability planning.',
+    category: 'housing',
+    url: 'https://www.nyc.gov/site/hra/help/homebase.page',
+    phone: '311',
+    tags: ['Free', 'Housing', 'Eviction Prevention', 'Support'],
+  },
+  {
+    name: 'HEAP',
+    org: 'Home Energy Assistance Program',
+    desc: 'Helps low-income households pay heating costs and provides emergency help for heat-related energy crises.',
+    category: 'housing',
+    url: 'https://access.nyc.gov/programs/home-energy-assistance-program-heap/',
+    phone: '718-557-1399',
+    tags: ['Free', 'Housing', 'Utilities', 'Energy'],
+  },
+  {
+    name: 'Cooling Assistance Benefit',
+    org: 'HEAP / ACCESS NYC',
+    desc: 'Helps eligible households buy and install an air conditioner or fan. Seasonal benefit with income and eligibility rules.',
+    category: 'housing',
+    url: 'https://access.nyc.gov/programs/cooling-assistance-benefit/',
+    phone: '718-557-1399',
+    tags: ['Free', 'Housing', 'Cooling', 'Seasonal'],
+  },
+  {
+    name: 'SCRIE',
+    org: 'Senior Citizen Rent Increase Exemption',
+    desc: 'Helps eligible seniors freeze rent increases in qualifying housing. Queens seniors can ask housing counselors about it.',
+    category: 'housing',
+    url: 'https://access.nyc.gov/programs/senior-citizens-rent-increase-exemption-scrie/',
+    phone: '311',
+    tags: ['Free', 'Housing', 'Seniors', 'Rent Freeze'],
+  },
+  {
+    name: 'NAICA Rental Assistance',
+    org: 'Bronx & Queens households',
+    desc: 'Emergency rental grants and case management that help prevent eviction for low-income Bronx and Queens households.',
+    category: 'housing',
+    url: 'https://www.naicany.org/what-we-do/rental-assistance/',
+    phone: '347-226-4169',
+    tags: ['Free', 'Housing', 'Queens', 'Eviction Prevention'],
+  },
+  {
+    name: 'Neighborhood Housing Services of Queens',
+    org: 'Elmhurst / Woodside',
+    desc: 'HUD-certified housing counseling, affordable housing guidance, homeownership support, and application help for Queens residents.',
+    category: 'housing',
+    url: 'https://nhsofqueens.org/',
+    phone: '718-457-1017',
+    tags: ['Free', 'Housing', 'Queens', 'Counseling'],
+  },
+  {
+    name: 'Willets Point Commons',
+    org: 'Flushing / Queens CB7',
+    desc: 'Affordable housing opportunity in Willets Point. Check the project site and Housing Connect for lottery updates and availability.',
+    category: 'housing',
+    url: 'https://www.livewilletspoint.com/',
+    tags: ['Free', 'Housing', 'Queens', 'Lottery'],
   },
   {
     name: 'Adhikaar',
@@ -39,10 +148,43 @@ const resources = [
   },
   {
     name: 'NYC Health + Hospitals / Elmhurst',
-    org: 'Elmhurst',
+    org: '79-01 Broadway, Elmhurst | (718) 334-4000',
     desc: 'Full-service hospital. Accepts all patients regardless of insurance or immigration status. NYC Care enrollment.',
     category: 'health',
+    url: 'https://www.nychealthandhospitals.org/elmhurst',
     tags: ['Free/Low-Cost', 'Healthcare', 'Walk-ins Welcome'],
+  },
+  {
+    name: 'NYC Health + Hospitals / Gotham Health, Jackson Heights',
+    org: '34-33 Junction Blvd, Jackson Heights | (718) 334-6150',
+    desc: 'Community clinic with low-cost care. Serves patients regardless of insurance or immigration status. NYC Care enrollment.',
+    category: 'health',
+    url: 'https://www.nychealthandhospitals.org/elmhurst/community-medical-centers/',
+    tags: ['Free/Low-Cost', 'Healthcare', 'Immigrant Friendly'],
+  },
+  {
+    name: 'NYC Health + Hospitals / Gotham Health, Woodside',
+    org: '50-53 Newtown Rd, Woodside | (718) 334-6140',
+    desc: 'Low-cost primary care and preventive services for Queens families, regardless of immigration status. NYC Care enrollment.',
+    category: 'health',
+    url: 'https://www.nychealthandhospitals.org/locations/nyc-health-hospitals-gotham-health-woodside/',
+    tags: ['Free/Low-Cost', 'Healthcare', 'Immigrant Friendly'],
+  },
+  {
+    name: 'Charles B. Wang Community Health Center',
+    org: '136-26 37th Ave, Flushing | (718) 886-1600',
+    desc: 'Community health center with primary care, pediatrics, and help enrolling in low-cost care for immigrant families.',
+    category: 'health',
+    url: 'https://www.cbwchc.org/locations/40th-road/',
+    tags: ['Free/Low-Cost', 'Healthcare', 'Immigrant Friendly'],
+  },
+  {
+    name: 'Apicha Community Health Center',
+    org: 'Queens',
+    desc: 'Serves AAPI and LGBTQ+ communities in Queens with low-cost, immigrant-friendly health services.',
+    category: 'health',
+    url: 'https://www.apicha.org/locations/jackson-heights-clinic/',
+    tags: ['Free/Low-Cost', 'Healthcare', 'Immigrant Friendly'],
   },
   {
     name: 'World Central Kitchen - Queens',
@@ -144,7 +286,45 @@ const resources = [
     org: 'Forest Hills & satellite sites',
     desc: 'Job readiness training, career counseling, resume workshops, and connections to employers.',
     category: 'jobs',
+    url: 'https://www.qchnyc.org/youth-workforce-programming',
+    phone: '347-571-0000 Ext. 310',
     tags: ['Free', 'Employment', 'Job Training'],
+  },
+  {
+    name: 'Jobs NYC',
+    org: 'City job portal and training programs',
+    desc: 'Search NYC government jobs, job training, apprenticeships, internships, and hiring events across the city.',
+    category: 'jobs',
+    url: 'https://jobs.nyc.gov/',
+    phone: '311',
+    tags: ['Free', 'Employment', 'City Jobs', 'Training'],
+  },
+  {
+    name: 'Workforce1 Career Centers',
+    org: 'Citywide career centers',
+    desc: 'One-on-one job search help, resume support, interview prep, and free training for adults looking for work.',
+    category: 'jobs',
+    url: 'https://www.nyc.gov/workforce1',
+    phone: '311',
+    tags: ['Free', 'Employment', 'Resume Help', 'Training'],
+  },
+  {
+    name: 'NHSQ Workforce Development',
+    org: 'LaGuardia Career Center / digital literacy',
+    desc: 'Job readiness, resume help, airport job opportunities, and free digital skills training for Queens residents.',
+    category: 'jobs',
+    url: 'https://nhsofqueens.org/workforce-development',
+    phone: '718-457-1017',
+    tags: ['Free', 'Employment', 'Queens', 'Training'],
+  },
+  {
+    name: 'Creative Apprenticeship Program',
+    org: 'Youth ages 14-24',
+    desc: 'Free training in 3D design, digital media, and graphic design with certificate and stipend for creative youth.',
+    category: 'jobs',
+    url: 'https://www.nyc.gov/employment/programs/creative-apprenticeship-program',
+    phone: '718-513-1115',
+    tags: ['Free', 'Employment', 'Youth', 'Apprenticeship'],
   },
   {
     name: 'Center for Employment Training (CET)',
@@ -193,6 +373,22 @@ const translations = {
     transport_title: 'Moverse por Queens',
     mayor_title: 'Mayor News',
     mayor_subtitle: 'Official updates from City Hall about announcements, actions, and policy changes.',
+    step_show: 'Show steps',
+    step_hide: 'Hide steps',
+    step_complete: 'Mark complete',
+    step_completed: 'Completed',
+    step_mark_complete: 'Mark step complete',
+    step_mark_incomplete: 'Mark step incomplete',
+    back_to_top: 'Back to top',
+    visit_website: 'Visit website',
+    open_resource: 'Open resource',
+    filter_all: 'All',
+    filter_legal: 'Legal',
+    filter_esl: 'ESL',
+    filter_health: 'Health',
+    filter_food: 'Food',
+    filter_housing: 'Housing',
+    filter_jobs: 'Jobs',
     checklist_descs: {
       'Get an ID / CityKey': 'La tarjeta NYC ID está disponible para todos los residentes sin importar su estatus. Visita un centro de inscripción.',
       'Apply for Jobs': 'Usa NYC Jobs y Workforce1 para buscar vacantes, obtener ayuda con tu resume y conectarte con servicios gratuitos de empleo.',
@@ -226,9 +422,25 @@ const translations = {
       'Make the Road New York': 'Servicios legales gratuitos, clases de ESL, ayuda con derechos laborales y organización comunitaria.',
       'Catholic Charities Immigration Legal Services': 'Abogados de inmigración pro bono, solicitudes de visa, ayuda de asilo y preparación para la ciudadanía.',
       'Chhaya CDC': 'Asesoría de vivienda, educación sobre derechos de inquilinos, alfabetización financiera y desarrollo comunitario.',
+      'NYC Housing Connect': 'Alquileres asequibles y oportunidades de compra en los cinco distritos. La elegibilidad de ingresos varía según la lotería.',
+      'NYCHA Public Housing': 'Solicite vivienda pública a través de NYCHA. Los solicitantes reciben un número de caso y quedan en lista de espera para una entrevista de elegibilidad.',
+      'Section 8 / Housing Choice Voucher': 'Asistencia federal para el alquiler que ayuda a los hogares elegibles a pagar parte de la renta en el mercado privado.',
+      'CityFHEPS': 'Ayuda de alquiler para familias elegibles con niños y hogares que ya están en albergue, para conseguir vivienda permanente.',
+      'LINC Rental Assistance': 'Ayuda a personas y familias a pasar de albergues de HRA/DHS a vivienda permanente.',
+      'Homebase': 'Servicios de prevención para personas en riesgo inminente de entrar al sistema de albergues, incluyendo prevención de desalojo y planificación de estabilidad de vivienda.',
+      HEAP: 'Ayuda a hogares de bajos ingresos a pagar calefacción y ofrece ayuda de emergencia para crisis energéticas relacionadas con el calor.',
+      'Cooling Assistance Benefit': 'Ayuda a hogares elegibles a comprar e instalar un aire acondicionado o ventilador. Beneficio estacional con reglas de ingresos y elegibilidad.',
+      SCRIE: 'Ayuda a personas mayores elegibles a congelar aumentos de renta en viviendas que califican. Los adultos mayores de Queens pueden preguntar a consejeros de vivienda.',
+      'NAICA Rental Assistance': 'Subsidios de alquiler de emergencia y gestión de casos que ayudan a prevenir el desalojo en hogares de bajos ingresos del Bronx y Queens.',
+      'Neighborhood Housing Services of Queens': 'Asesoría de vivienda certificada por HUD, orientación sobre vivienda asequible, apoyo para propiedad y ayuda con solicitudes para residentes de Queens.',
+      'Willets Point Commons': 'Oportunidad de vivienda asequible en Willets Point. Consulte el sitio del proyecto y Housing Connect para actualizaciones y disponibilidad.',
       Adhikaar: 'Organización comunitaria, referencias legales, acceso a la salud y derechos laborales para la comunidad nepalí.',
       'Queens Public Library - ESOL': 'Clases de inglés para adultos de 17 años o más en niveles principiante e intermedio. Enfoque en comprender y hablar inglés en situaciones de la vida real. Llame a ESOL al (718) 480-4300 o escriba a ESOL@queenslibrary.org.',
       'NYC Health + Hospitals / Elmhurst': 'Hospital de servicio completo. Atiende a todos sin importar seguro o estatus migratorio. Inscripción a NYC Care.',
+      'NYC Health + Hospitals / Gotham Health, Jackson Heights': 'Clínica comunitaria con atención de bajo costo. Atiende a pacientes sin importar seguro o estatus migratorio. Inscripción a NYC Care.',
+      'NYC Health + Hospitals / Gotham Health, Woodside': 'Atención primaria y preventiva de bajo costo para familias de Queens, sin importar el estatus migratorio. Inscripción a NYC Care.',
+      'Charles B. Wang Community Health Center': 'Centro de salud comunitario con atención primaria, pediatría y ayuda para inscribirse en atención de bajo costo para familias inmigrantes.',
+      'Apicha Community Health Center': 'Sirve a comunidades AAPI y LGBTQ+ en Queens con servicios de salud de bajo costo y amigables para inmigrantes.',
       'World Central Kitchen - Queens': 'Distribución gratuita de comida para familias recién llegadas. Comidas frescas y culturalmente apropiadas.',
       'La Jornada Food Pantry': 'Distribución semanal de alimentos. Productos frescos, despensa básica. Lleva una bolsa. No se necesita identificación.',
       'New Immigrant Community Empowerment (NICE)': 'Sirve específicamente a inmigrantes con apoyo comunitario y recursos de acceso a alimentos.',
@@ -236,6 +448,10 @@ const translations = {
       'Buddhist Tzu Chi Foundation': 'Apoyo alimentario comunitario y servicios de ayuda en Flushing.',
       'Korean Community Services': 'Asistencia alimentaria y servicios comunitarios para la comunidad coreana.',
       'Queens Community House': 'Apoyo alimentario y servicios vecinales para familias locales.',
+      'Jobs NYC': 'Portal de empleo de la ciudad con vacantes gubernamentales, programas de capacitación, pasantías, aprendizajes y ferias de contratación.',
+      'Workforce1 Career Centers': 'Ayuda personalizada para la búsqueda de empleo, apoyo con el resume, preparación para entrevistas y capacitación gratuita para adultos.',
+      'NHSQ Workforce Development': 'Preparación laboral, ayuda con el resume, oportunidades en el aeropuerto y capacitación digital gratuita para residentes de Queens.',
+      'Creative Apprenticeship Program': 'Capacitación gratuita en diseño 3D, medios digitales y diseño gráfico con certificado y estipendio para jóvenes creativos.',
       'Greater Ridgewood Youth Council': 'Servicios para jóvenes y familias que incluyen apoyo alimentario y referencias.',
       'Haitian Americans United for Progress': 'Organización comunitaria que apoya a residentes haitianos con recursos y referencias.',
       'YMCA - ESOL': 'Vaya a la recepción del YMCA, o llame y deje un mensaje de voz o un texto con su nombre completo y número de teléfono al 347-455-8452. Le devolverán la llamada a principios de julio. La inscripción y las pruebas de ubicación se realizan en el aula en julio y agosto, y las clases comienzan en persona a principios de septiembre.',
@@ -267,6 +483,22 @@ const translations = {
     transport_title: '在皇后区出行',
     mayor_title: 'Mayor News',
     mayor_subtitle: '来自市政厅的官方更新，包括公告、行动和政策变化。',
+    step_show: '显示步骤',
+    step_hide: '隐藏步骤',
+    step_complete: '标记完成',
+    step_completed: '已完成',
+    step_mark_complete: '标记步骤为完成',
+    step_mark_incomplete: '标记步骤为未完成',
+    back_to_top: '返回顶部',
+    visit_website: '访问网站',
+    open_resource: '打开资源',
+    filter_all: '全部',
+    filter_legal: '法律',
+    filter_esl: 'ESL',
+    filter_health: '医疗',
+    filter_food: '食物',
+    filter_housing: '住房',
+    filter_jobs: '工作',
     checklist_descs: {
       'Get an ID / CityKey': 'NYC ID 卡向所有居民开放，不论身份如何。前往注册中心办理。',
       'Apply for Jobs': '使用 NYC Jobs 和 Workforce1 搜索职位、获取简历帮助并连接免费就业服务。',
@@ -300,9 +532,25 @@ const translations = {
       'Make the Road New York': '提供免费法律服务、ESL 课程、劳工权益帮助和社区组织支持。',
       'Catholic Charities Immigration Legal Services': '公益移民律师、签证申请、庇护协助和入籍准备。',
       'Chhaya CDC': '住房咨询、租客权益教育、金融知识和社区发展。',
+      'NYC Housing Connect': '在五个行政区提供可负担租赁和购房机会。收入资格因抽签而异。',
+      'NYCHA Public Housing': '通过 NYCHA 申请公屋。申请后会得到案件编号，并在资格面试前进入等候名单。',
+      'Section 8 / Housing Choice Voucher': '联邦租金补助，帮助符合资格的家庭在私人市场支付部分房租。',
+      'CityFHEPS': '为有孩子的合格家庭和已经在收容所中的家庭提供租金援助，帮助他们获得永久住房。',
+      'LINC Rental Assistance': '帮助个人和家庭从 HRA/DHS 收容所搬入永久住房。',
+      'Homebase': '为即将进入收容所系统的人提供预防服务，包括防止驱逐和住房稳定规划。',
+      HEAP: '帮助低收入家庭支付供暖费用，并为与高温相关的能源紧急情况提供紧急援助。',
+      'Cooling Assistance Benefit': '帮助符合资格的家庭购买并安装空调或风扇。这是一项有收入和资格限制的季节性福利。',
+      SCRIE: '帮助符合资格的老年人冻结符合条件住房的房租涨幅。皇后区老年人可向住房顾问咨询。',
+      'NAICA Rental Assistance': '为布朗克斯和皇后区的低收入家庭提供紧急租金补助和个案管理，帮助防止驱逐。',
+      'Neighborhood Housing Services of Queens': 'HUD 认证的住房咨询、可负担住房指导、房主支持和皇后区居民申请帮助。',
+      'Willets Point Commons': '法拉盛 Willets Point 的可负担住房机会。请查看项目网站和 Housing Connect 获取抽签更新和可用信息。',
       Adhikaar: '面向尼泊尔语社区的社区组织、法律转介、医疗服务和劳工权益支持。',
       'Queens Public Library - ESOL': '面向17岁及以上成人的英语课程，提供初级和中级水平。重点练习在真实生活场景中理解和说英语。请联系 ESOL Program： (718) 480-4300 或 ESOL@queenslibrary.org。',
       'NYC Health + Hospitals / Elmhurst': '综合医院，不论保险或移民身份都可就诊，并可申请 NYC Care。',
+      'NYC Health + Hospitals / Gotham Health, Jackson Heights': '提供低成本医疗的社区诊所。不论保险或移民身份都可就诊，并可申请 NYC Care。',
+      'NYC Health + Hospitals / Gotham Health, Woodside': '为皇后区家庭提供低成本的初级保健和预防服务，不论移民身份。可申请 NYC Care。',
+      'Charles B. Wang Community Health Center': '提供初级保健、儿科，并帮助移民家庭登记低成本医疗的社区健康中心。',
+      'Apicha Community Health Center': '为皇后区的 AAPI 和 LGBTQ+ 社区提供低成本、友好的移民健康服务。',
       'World Central Kitchen - Queens': '为新来家庭提供免费餐食发放，食物新鲜且符合文化习惯。',
       'La Jornada Food Pantry': '每周提供食品分发，新鲜农产品和基本食品，无需身份证明。',
       'New Immigrant Community Empowerment (NICE)': '专门为移民提供社区支持和食品获取资源。',
@@ -310,6 +558,10 @@ const translations = {
       'Buddhist Tzu Chi Foundation': '在法拉盛提供社区食品援助和救助服务。',
       'Korean Community Services': '为韩裔社区提供食品援助和社区服务。',
       'Queens Community House': '为当地家庭提供食品支持和社区服务。',
+      'Jobs NYC': '纽约市就业门户，提供政府职位、培训项目、实习、学徒和招聘活动。',
+      'Workforce1 Career Centers': '一对一求职帮助、简历支持、面试准备以及面向成人的免费培训。',
+      'NHSQ Workforce Development': '求职准备、简历帮助、机场工作机会和面向皇后区居民的免费数字技能培训。',
+      'Creative Apprenticeship Program': '面向创意青年的免费 3D 设计、数字媒体和平面设计培训，提供证书和津贴。',
       'Greater Ridgewood Youth Council': '为年轻人和家庭提供食品支持和转介服务。',
       'Haitian Americans United for Progress': '支持海地居民的社区组织，提供资源和转介。',
       'YMCA - ESOL': '请到 YMCA 前台，或拨打电话并留下语音信箱，或发送短信，内容包括您的全名和电话号码：347-455-8452。工作人员会在7月初回电。7月和8月将在教室内进行报名和分班考试，课程将于9月初线下开始。',
@@ -341,6 +593,22 @@ const translations = {
     transport_title: '퀸즈 이동 방법',
     mayor_title: 'Mayor News',
     mayor_subtitle: '시장실의 공식 공지와 정책 변화 업데이트입니다.',
+    step_show: '단계 보기',
+    step_hide: '단계 숨기기',
+    step_complete: '완료 표시',
+    step_completed: '완료됨',
+    step_mark_complete: '단계를 완료로 표시',
+    step_mark_incomplete: '단계를 미완료로 표시',
+    back_to_top: '맨 위로',
+    visit_website: '웹사이트 방문',
+    open_resource: '자원 열기',
+    filter_all: '전체',
+    filter_legal: '법률',
+    filter_esl: 'ESL',
+    filter_health: '의료',
+    filter_food: '식품',
+    filter_housing: '주거',
+    filter_jobs: '일자리',
     checklist_descs: {
       'Get an ID / CityKey': 'NYC ID 카드는 신분과 상관없이 모든 주민에게 제공됩니다. 등록 센터를 방문하세요.',
       'Apply for Jobs': 'NYC Jobs와 Workforce1을 사용해 채용 공고를 찾고, 이력서 도움을 받고, 무료 취업 서비스를 연결하세요.',
@@ -374,9 +642,25 @@ const translations = {
       'Make the Road New York': '무료 법률 서비스, ESL 수업, 노동권 지원, 커뮤니티 조직 활동을 제공합니다.',
       'Catholic Charities Immigration Legal Services': '무료 이민 변호사, 비자 신청, 망명 도움, 시민권 준비를 지원합니다.',
       'Chhaya CDC': '주거 상담, 세입자 권리 교육, 금융 교육, 커뮤니티 개발을 제공합니다.',
+      'NYC Housing Connect': '5개 보로 전역의 저렴한 임대 및 주택 구매 기회를 제공합니다. 소득 자격은 추첨마다 다릅니다.',
+      'NYCHA Public Housing': 'NYCHA를 통해 공공주택을 신청하세요. 신청 후 사건 번호를 받고 자격 인터뷰 대기 명단에 오릅니다.',
+      'Section 8 / Housing Choice Voucher': '민간 시장에서 임대료의 일부를 지원하는 연방 임대 지원 프로그램입니다.',
+      'CityFHEPS': '자녀가 있는 적격 가구와 이미 보호소에 있는 가구가 영구 주택을 구할 수 있도록 돕는 임대 지원입니다.',
+      'LINC Rental Assistance': 'HRA/DHS 보호소에서 영구 주택으로 이동하도록 개인과 가족을 돕습니다.',
+      Homebase: '보호소 진입 위험이 임박한 사람들을 위한 예방 서비스로, 퇴거 방지와 주거 안정 계획을 포함합니다.',
+      HEAP: '저소득 가구의 난방비를 돕고, 폭염 관련 에너지 비상 상황에 긴급 지원을 제공합니다.',
+      'Cooling Assistance Benefit': '적격 가구가 에어컨이나 선풍기를 구매하고 설치하도록 돕습니다. 소득 및 자격 기준이 있는 계절성 혜택입니다.',
+      SCRIE: '적격 노년층의 임대료 인상을 동결하도록 돕습니다. 퀸즈의 노년층은 주거 상담사에게 문의할 수 있습니다.',
+      'NAICA Rental Assistance': '브롱크스와 퀸즈의 저소득 가구를 위한 긴급 임대료 보조와 사례 관리를 제공합니다.',
+      'Neighborhood Housing Services of Queens': 'HUD 인증 주거 상담, 저렴한 주택 안내, 자가 소유 지원, 퀸즈 주민 신청 도움을 제공합니다.',
+      'Willets Point Commons': 'Willets Point의 저렴한 주택 기회입니다. 프로젝트 사이트와 Housing Connect에서 추첨 업데이트와 현재 공실을 확인하세요.',
       Adhikaar: '네팔어 공동체를 위한 커뮤니티 조직, 법률 안내, 의료 접근, 노동권 지원.',
       'Queens Public Library - ESOL': '17세 이상 성인을 위한 초급 및 중급 영어 수업입니다. 실제 생활 상황에서 영어를 이해하고 말하는 연습에 중점을 둡니다. ESOL Program (718) 480-4300 또는 ESOL@queenslibrary.org로 문의하세요.',
       'NYC Health + Hospitals / Elmhurst': '보험이나 이민 신분과 상관없이 누구나 진료받을 수 있는 종합병원입니다. NYC Care 등록 가능.',
+      'NYC Health + Hospitals / Gotham Health, Jackson Heights': '저비용 진료를 제공하는 지역 클리닉입니다. 보험이나 이민 신분과 상관없이 진료받을 수 있으며 NYC Care 등록이 가능합니다.',
+      'NYC Health + Hospitals / Gotham Health, Woodside': '이민 신분과 상관없이 퀸즈 가족을 위한 저비용 1차 진료와 예방 서비스를 제공합니다. NYC Care 등록 가능.',
+      'Charles B. Wang Community Health Center': '이민자 가족을 위한 1차 진료, 소아과, 저비용 진료 등록 지원을 제공하는 지역 보건센터입니다.',
+      'Apicha Community Health Center': '퀸즈의 AAPI 및 LGBTQ+ 커뮤니티를 위한 저비용, 이민 친화적 건강 서비스를 제공합니다.',
       'World Central Kitchen - Queens': '새로 도착한 가족을 위한 무료 식사 배포. 문화적으로 익숙한 음식을 제공합니다.',
       'La Jornada Food Pantry': '주간 식품 배급, 신선한 농산물과 기본 식료품 제공. 가방을 가져오세요. 신분증 불필요.',
       'New Immigrant Community Empowerment (NICE)': '이민자를 위한 커뮤니티 지원과 식품 접근 자원을 제공합니다.',
@@ -384,6 +668,10 @@ const translations = {
       'Buddhist Tzu Chi Foundation': '플러싱에서 커뮤니티 식품 지원과 구호 서비스를 제공합니다.',
       'Korean Community Services': '한인 커뮤니티를 위한 식품 지원과 커뮤니티 서비스를 제공합니다.',
       'Queens Community House': '지역 가정을 위한 식품 지원과 동네 서비스를 제공합니다.',
+      'Jobs NYC': '시 정부 채용, 교육 프로그램, 인턴십, 견습, 채용 행사를 제공하는 뉴욕시 일자리 포털입니다.',
+      'Workforce1 Career Centers': '1:1 구직 도움, resume 지원, 면접 준비, 성인 대상 무료 교육을 제공합니다.',
+      'NHSQ Workforce Development': '구직 준비, resume 도움, 공항 일자리 기회, 퀸즈 주민을 위한 무료 디지털 기술 교육을 제공합니다.',
+      'Creative Apprenticeship Program': '창의적인 청소년을 위한 3D 디자인, 디지털 미디어, 그래픽 디자인 무료 교육과 수료증, 장려금을 제공합니다.',
       'Greater Ridgewood Youth Council': '청소년과 가족을 위한 식품 지원 및 안내를 제공합니다.',
       'Haitian Americans United for Progress': '아이티 주민을 위한 자원과 안내를 제공하는 커뮤니티 조직입니다.',
       'YMCA - ESOL': 'YMCA 프런트 데스크로 오시거나, 성명과 전화번호를 남겨 음성 메시지를 남기거나 347-455-8452로 문자하세요. 전화를 7월 초에 다시 드립니다. 등록과 배치 시험은 7월과 8월에 교실에서 진행되며, 수업은 9월 초에 대면으로 시작합니다.',
@@ -415,6 +703,22 @@ const translations = {
     transport_title: 'কুইন্সে চলাফেরা',
     mayor_title: 'Mayor News',
     mayor_subtitle: 'সিটি হল থেকে অফিসিয়াল আপডেট, ঘোষণা এবং নীতিগত পরিবর্তন।',
+    step_show: 'ধাপ দেখান',
+    step_hide: 'ধাপ লুকান',
+    step_complete: 'সম্পন্ন চিহ্নিত করুন',
+    step_completed: 'সম্পন্ন',
+    step_mark_complete: 'ধাপ সম্পন্ন হিসেবে চিহ্নিত করুন',
+    step_mark_incomplete: 'ধাপ অসম্পন্ন হিসেবে চিহ্নিত করুন',
+    back_to_top: 'শীর্ষে ফিরে যান',
+    visit_website: 'ওয়েবসাইট দেখুন',
+    open_resource: 'রিসোর্স খুলুন',
+    filter_all: 'সব',
+    filter_legal: 'আইনি',
+    filter_esl: 'ESL',
+    filter_health: 'স্বাস্থ্য',
+    filter_food: 'খাবার',
+    filter_housing: 'বাসস্থান',
+    filter_jobs: 'চাকরি',
     checklist_descs: {
       'Get an ID / CityKey': 'NYC ID কার্ড স্ট্যাটাস নির্বিশেষে সব বাসিন্দার জন্য উপলভ্য। রেজিস্ট্রেশন সেন্টারে যান।',
       'Apply for Jobs': 'NYC Jobs এবং Workforce1 ব্যবহার করে চাকরির সুযোগ খুঁজুন, রিজুমে সাহায্য নিন, এবং বিনামূল্যে কর্মসংস্থান সেবার সাথে যুক্ত হন।',
@@ -448,9 +752,25 @@ const translations = {
       'Make the Road New York': 'বিনামূল্যে আইনি সেবা, ESL ক্লাস, শ্রমিক অধিকার সহায়তা এবং কমিউনিটি সংগঠনের কাজ করে।',
       'Catholic Charities Immigration Legal Services': 'প্রো বোনো ইমিগ্রেশন আইনজীবী, ভিসা আবেদন, আশ্রয় সহায়তা এবং নাগরিকত্ব প্রস্তুতি দেয়।',
       'Chhaya CDC': 'বাসস্থান পরামর্শ, ভাড়াটে অধিকার শিক্ষা, আর্থিক সাক্ষরতা এবং কমিউনিটি উন্নয়ন।',
+      'NYC Housing Connect': 'পাঁচটি বরো জুড়ে সাশ্রয়ী ভাড়া ও বাড়ি কেনার সুযোগ। আয়ের যোগ্যতা লটারিভেদে ভিন্ন হয়।',
+      'NYCHA Public Housing': 'NYCHA-এর মাধ্যমে পাবলিক হাউজিংয়ের জন্য আবেদন করুন। আবেদন করার পর আপনি একটি কেস নম্বর পাবেন এবং যোগ্যতা সাক্ষাৎকারের জন্য অপেক্ষমান তালিকায় থাকবেন।',
+      'Section 8 / Housing Choice Voucher': 'ফেডারেল ভাড়ার সহায়তা যা যোগ্য পরিবারকে বেসরকারি বাজারে ভাড়ার একটি অংশ দিতে সাহায্য করে।',
+      'CityFHEPS': 'যোগ্য সন্তানসহ পরিবার এবং আশ্রয়কেন্দ্রে থাকা পরিবারকে স্থায়ী বাসস্থান পেতে ভাড়ার সহায়তা দেয়।',
+      'LINC Rental Assistance': 'HRA/DHS আশ্রয়কেন্দ্র থেকে মানুষ ও পরিবারকে স্থায়ী বাসস্থানে যেতে সাহায্য করে।',
+      Homebase: 'আশ্রয়কেন্দ্রে প্রবেশের তীব্র ঝুঁকিতে থাকা মানুষদের জন্য প্রতিরোধমূলক সেবা, যার মধ্যে উচ্ছেদ প্রতিরোধ ও বাসস্থান স্থিতিশীলতার পরিকল্পনা রয়েছে।',
+      HEAP: 'স্বল্প আয়ের পরিবারকে গরমের খরচ দিতে সাহায্য করে এবং তাপ-সম্পর্কিত জ্বালানি জরুরিতে সহায়তা দেয়।',
+      'Cooling Assistance Benefit': 'যোগ্য পরিবারকে এয়ার কন্ডিশনার বা ফ্যান কিনতে ও ইনস্টল করতে সাহায্য করে। এটি আয় ও যোগ্যতার শর্তসহ মৌসুমি সুবিধা।',
+      SCRIE: 'যোগ্য প্রবীণদের ভাড়া বৃদ্ধিকে স্থির রাখতে সাহায্য করে। Queens-এর প্রবীণরা হাউজিং কাউন্সেলরের সঙ্গে কথা বলতে পারেন।',
+      'NAICA Rental Assistance': 'Bronx এবং Queens-এর স্বল্প আয়ের পরিবারের জন্য জরুরি ভাড়া অনুদান ও কেস ম্যানেজমেন্ট, যা উচ্ছেদ প্রতিরোধে সাহায্য করে।',
+      'Neighborhood Housing Services of Queens': 'HUD-সার্টিফায়েড বাসস্থান পরামর্শ, সাশ্রয়ী আবাসন নির্দেশনা, বাড়ির মালিকানা সহায়তা, এবং Queens বাসিন্দাদের আবেদন সহায়তা।',
+      'Willets Point Commons': 'Willets Point-এ সাশ্রয়ী বাসস্থানের সুযোগ। লটারির আপডেট ও প্রাপ্যতার জন্য প্রকল্প সাইট এবং Housing Connect দেখুন।',
       Adhikaar: 'নেপালি-ভাষী সম্প্রদায়ের জন্য কমিউনিটি সংগঠন, আইনি রেফারেল, স্বাস্থ্যসেবা প্রবেশ এবং শ্রমিক অধিকার সহায়তা।',
       'Queens Public Library - ESOL': '১৭ বছর বা তার বেশি বয়সী প্রাপ্তবয়স্কদের জন্য প্রাথমিক ও মধ্যম স্তরের ইংরেজি ক্লাস। বাস্তব জীবনের পরিস্থিতিতে ইংরেজি বোঝা ও বলার অনুশীলনে গুরুত্ব দেওয়া হয়। ESOL Program-এ (718) 480-4300 নম্বরে ফোন করুন বা ESOL@queenslibrary.org-এ লিখুন।',
       'NYC Health + Hospitals / Elmhurst': 'পূর্ণ-সেবা হাসপাতাল। বীমা বা ইমিগ্রেশন স্ট্যাটাস না দেখেই সবাইকে চিকিৎসা দেয়। NYC Care নিবন্ধন রয়েছে।',
+      'NYC Health + Hospitals / Gotham Health, Jackson Heights': 'কম খরচের সেবা দেওয়া কমিউনিটি ক্লিনিক। বীমা বা ইমিগ্রেশন স্ট্যাটাস নির্বিশেষে সবাইকে চিকিৎসা দেয়। NYC Care নিবন্ধন রয়েছে।',
+      'NYC Health + Hospitals / Gotham Health, Woodside': 'ইমিগ্রেশন স্ট্যাটাস নির্বিশেষে কুইন্স পরিবারের জন্য কম খরচের প্রাথমিক ও প্রতিরোধমূলক সেবা দেয়। NYC Care নিবন্ধন রয়েছে।',
+      'Charles B. Wang Community Health Center': 'ইমিগ্র্যান্ট পরিবারের জন্য প্রাথমিক চিকিৎসা, শিশু চিকিৎসা এবং কম খরচের সেবায় নিবন্ধনের সহায়তা দেয় এমন কমিউনিটি হেলথ সেন্টার।',
+      'Apicha Community Health Center': 'কুইন্সের AAPI এবং LGBTQ+ সম্প্রদায়কে কম খরচের, ইমিগ্র্যান্ট-বান্ধব স্বাস্থ্যসেবা দেয়।',
       'World Central Kitchen - Queens': 'নতুন আসা পরিবারের জন্য বিনামূল্যে খাবার বিতরণ। সাংস্কৃতিকভাবে উপযুক্ত খাবার দেয়।',
       'La Jornada Food Pantry': 'সাপ্তাহিক খাবার বিতরণ। তাজা সবজি ও মৌলিক মুদিখানা। ব্যাগ আনুন। আইডি লাগে না।',
       'New Immigrant Community Empowerment (NICE)': 'ইমিগ্র্যান্টদের জন্য বিশেষভাবে কমিউনিটি সহায়তা ও খাবার পাওয়ার উৎস দেয়।',
@@ -458,6 +778,10 @@ const translations = {
       'Buddhist Tzu Chi Foundation': 'ফ্লাশিং-এ কমিউনিটি খাবার সহায়তা ও ত্রাণ সেবা দেয়।',
       'Korean Community Services': 'কোরিয়ান সম্প্রদায়ের জন্য খাবার সহায়তা ও কমিউনিটি সেবা দেয়।',
       'Queens Community House': 'স্থানীয় পরিবারের জন্য খাবার সহায়তা ও পাড়ার সেবা দেয়।',
+      'Jobs NYC': 'নিউ ইয়র্ক সিটির চাকরির পোর্টাল, যেখানে সরকারি পদ, প্রশিক্ষণ প্রোগ্রাম, ইন্টার্নশিপ, অ্যাপ্রেন্টিসশিপ এবং নিয়োগ ইভেন্ট রয়েছে।',
+      'Workforce1 Career Centers': 'এক-এক করে চাকরি খোঁজার সাহায্য, resume সহায়তা, ইন্টারভিউ প্রস্তুতি এবং প্রাপ্তবয়স্কদের জন্য বিনামূল্যে প্রশিক্ষণ।',
+      'NHSQ Workforce Development': 'চাকরি প্রস্তুতি, resume সহায়তা, বিমানবন্দরের চাকরির সুযোগ, এবং Queens বাসিন্দাদের জন্য বিনামূল্যে ডিজিটাল দক্ষতা প্রশিক্ষণ।',
+      'Creative Apprenticeship Program': 'সৃজনশীল তরুণদের জন্য 3D ডিজাইন, ডিজিটাল মিডিয়া ও গ্রাফিক ডিজাইনে বিনামূল্যে প্রশিক্ষণ, সার্টিফিকেট ও স্টাইপেন্ডসহ।',
       'Greater Ridgewood Youth Council': 'তরুণ ও পরিবারের জন্য খাবার সহায়তা ও রেফারেল দেয়।',
       'Haitian Americans United for Progress': 'হাইতিয়ান বাসিন্দাদের জন্য সম্পদ ও রেফারেল সহায়তা করা কমিউনিটি সংগঠন।',
       'YMCA - ESOL': 'YMCA-এর ফ্রন্ট ডেস্কে যান, অথবা কল করে আপনার পুরো নাম এবং ফোন নম্বরসহ ভয়েসমেইল বা টেক্সট করুন 347-455-8452 নম্বরে। জুলাইয়ের শুরুতে কলের উত্তর দেওয়া হবে। জুলাই ও আগস্টে শ্রেণিকক্ষে নিবন্ধন ও প্লেসমেন্ট পরীক্ষা হবে, এবং ক্লাস সেপ্টেম্বরের শুরুতে সরাসরি শুরু হবে।',
@@ -625,6 +949,29 @@ const transport = [
   },
 ];
 
+const queensHospitals = [
+  {
+    name: 'NYC Health + Hospitals / Elmhurst',
+    url: 'https://www.nychealthandhospitals.org/elmhurst',
+    desc: 'Public hospital in Elmhurst with emergency and specialty care.',
+  },
+  {
+    name: 'Jamaica Hospital Medical Center',
+    url: 'https://jamaicahospital.org/',
+    desc: 'Community hospital in Jamaica with emergency, ambulatory, and specialty services.',
+  },
+  {
+    name: 'NewYork-Presbyterian Queens',
+    url: 'https://www.nyp.org/locations/queens/nyp-queens',
+    desc: 'Major hospital in Flushing with 24/7 emergency and inpatient care.',
+  },
+  {
+    name: 'Mount Sinai Queens',
+    url: 'https://www.mountsinai.org/locations/queens',
+    desc: 'Astoria hospital with outpatient, emergency, and inpatient medical services.',
+  },
+];
+
 const languageButtons = [
   { key: 'en', label: 'EN' },
   { key: 'es', label: 'ES' },
@@ -645,12 +992,12 @@ const filters = [
 
 const categoryOrder = filters.filter((item) => item.key !== 'all');
 const categoryColors = {
-  legal: '#7c4dff',
-  esl: '#ff6b6b',
-  health: '#ffd166',
-  food: '#06d6a0',
-  housing: '#4d96ff',
-  jobs: '#ff9f1c',
+  legal: '#1f7a4d',
+  esl: '#d4a62a',
+  health: '#2f6f9f',
+  food: '#59b870',
+  housing: '#5a86d6',
+  jobs: '#d98c1a',
 };
 
 const langTags = new Set(['Spanish', 'Mandarin', 'Bengali', 'Hindi', 'Nepali', 'Korean', 'Multiple Languages']);
@@ -785,7 +1132,14 @@ function App() {
               const isOpen = openChecklist.includes(index);
               return (
                 <li key={step.title} className={`${isDone ? 'done' : ''} ${isOpen ? 'open' : ''}`}>
-                  <div className="check" aria-hidden="true">{isDone ? '✓' : ''}</div>
+                  <button
+                    type="button"
+                    className="check"
+                    onClick={() => toggleDone(index)}
+                    aria-label={isDone ? (copy.step_mark_incomplete || 'Mark step incomplete') : (copy.step_mark_complete || 'Mark step complete')}
+                  >
+                    <span aria-hidden="true">{isDone ? '✓' : ''}</span>
+                  </button>
                   <div className="checklist-body">
                     <div className="checklist-head">
                       <button
@@ -794,15 +1148,15 @@ function App() {
                         onClick={() => toggleChecklistOpen(index)}
                       >
                         <span className="step-title">{copy[`step${index + 1}`] || step.title}</span>
-                        <span className="step-toggle-label">{isOpen ? 'Hide steps' : 'Show steps'}</span>
+                        <span className="step-toggle-label">{isOpen ? (copy.step_hide || 'Hide steps') : (copy.step_show || 'Show steps')}</span>
                       </button>
                       <button
                         type="button"
                         className="check-toggle"
                         onClick={() => toggleDone(index)}
-                        aria-label={isDone ? 'Mark step incomplete' : 'Mark step complete'}
+                        aria-label={isDone ? (copy.step_mark_incomplete || 'Mark step incomplete') : (copy.step_mark_complete || 'Mark step complete')}
                       >
-                        {isDone ? 'Completed' : 'Mark complete'}
+                        {isDone ? (copy.step_completed || 'Completed') : (copy.step_complete || 'Mark complete')}
                       </button>
                     </div>
                     {isOpen ? (
@@ -838,7 +1192,7 @@ function App() {
         <section className="section" id="resources">
           <div className="section-header">
             <h3>{copy.resources_title || 'Resource Directory'}</h3>
-            <a href="#top">Back to top</a>
+            <a href="#top">{copy.back_to_top || 'Back to top'}</a>
           </div>
 
           <div className="filter-bar">
@@ -850,7 +1204,7 @@ function App() {
                 onClick={() => setFilter(item.key)}
                 type="button"
               >
-                {item.label}
+                {copy[`filter_${item.key}`] || item.label}
               </button>
             ))}
           </div>
@@ -862,14 +1216,19 @@ function App() {
                   <h4>{group.label}</h4>
                 </div>
                 <div className="resource-group-list">
-                  {group.items.map((resource) => (
-                    <article key={`${resource.category}-${resource.name}`} className={`resource-card ${resource.tags.includes('Free') ? 'free' : ''}`}>
+            {group.items.map((resource) => (
+                  <article key={`${resource.category}-${resource.name}`} className={`resource-card ${resource.tags.includes('Free') ? 'free' : ''}`}>
                       <h5>{resource.name}</h5>
                       <div className="org">{resource.org}</div>
+                      {resource.phone ? (
+                        <a className="resource-phone" href={`tel:${resource.phone.replace(/[^0-9+]/g, '')}`}>
+                          Call {resource.phone}
+                        </a>
+                      ) : null}
                       <div className="desc">{resourceDescs[resource.name] || resource.desc}</div>
                       {resource.url ? (
                         <a className="resource-link" href={resource.url} target="_blank" rel="noreferrer">
-                          Visit website
+                          {copy.visit_website || 'Visit website'}
                         </a>
                       ) : null}
                       <div className="tags">
@@ -885,6 +1244,25 @@ function App() {
                     </article>
                   ))}
                 </div>
+                {group.key === 'health' ? (
+                  <div className="health-subsection">
+                    <div className="health-subsection-header">
+                      <h5>Hospitals in Queens</h5>
+                      <p>Official hospital websites for Queens care, directions, and patient information.</p>
+                    </div>
+                    <div className="health-hospital-grid">
+                      {queensHospitals.map((hospital) => (
+                        <article key={hospital.name} className="hospital-card">
+                          <h6>{hospital.name}</h6>
+                          <p>{hospital.desc}</p>
+                          <a className="resource-link" href={hospital.url} target="_blank" rel="noreferrer">
+                            {copy.visit_website || 'Visit website'}
+                          </a>
+                        </article>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
               </section>
             ))}
           </div>
@@ -901,7 +1279,7 @@ function App() {
                 <p>{rightsDescs[item.title] || item.desc}</p>
                 <span className="phone">{item.phone}</span>
                 <a className="resource-link" href={item.url} target="_blank" rel="noreferrer">
-                  Open resource
+                  {copy.open_resource || 'Open resource'}
                 </a>
               </article>
             ))}
