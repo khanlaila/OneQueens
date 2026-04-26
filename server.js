@@ -21,6 +21,7 @@ import { fileURLToPath } from 'url';
 import express from 'express';
 import cors from 'cors';
 import OpenAI from 'openai';
+import TurndownService from 'turndown';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -29,7 +30,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // ---------------------------------------------------------------------------
 
 const MODEL_API_KEY = process.env.NOVITA_API_KEY;
-const CHOSEN_MODEL = process.env.DEEPSEEK_MODEL || 'google/gemma-4-26b-a4b-it';
+const CHOSEN_MODEL = process.env.DEEPSEEK_MODEL || 'google/gemma-4-31b-it';
 const SEARXNG_BASE_URL = process.env.SEARXNG_BASE_URL || 'https://act.search.seoul.st';
 const HOST = process.env.HOST || '0.0.0.0';
 const PORT = parseInt(process.env.PORT || '8000', 10);
@@ -75,9 +76,33 @@ const WEB_SEARCH_TOOL = {
   },
 };
 
-const TOOLS = [WEB_SEARCH_TOOL];
+const FETCH_WEBPAGE_TOOL = {
+  type: 'function',
+  function: {
+    name: 'fetch_webpage',
+    description:
+      'Fetch the full content of a webpage and return it as clean markdown text. ' +
+      'Use this to read a specific URL found in search results when you need ' +
+      'detailed information from the page itself (e.g. hours, eligibility, contact info).',
+    parameters: {
+      type: 'object',
+      properties: {
+        url: {
+          type: 'string',
+          description: 'The full URL of the webpage to fetch (e.g. "https://example.org/services")',
+        },
+      },
+      required: ['url'],
+    },
+  },
+};
+
+const TOOLS = [WEB_SEARCH_TOOL, FETCH_WEBPAGE_TOOL];
 
 const SYSTEM_PROMPT_TOOLS = `You are an AI assistant for the Queens Resource Navigator, a website helping newly arrived immigrants find resources in Queens, NYC. Respond in the same language as the user.
+
+Knowledge cutoff: January 2025
+Current date: ${new Date().toLocaleDateString('en-US')}
 
 ## Scope
 - Your primary focus is helping immigrants in Queens, NYC. This includes: resources, services, legal aid, ESL/language classes, healthcare, food assistance, housing, employment, education, public benefits, community organizations, navigating government systems, local policies, civic information, and elected officials' positions that affect immigrant communities.
@@ -91,8 +116,9 @@ const SYSTEM_PROMPT_TOOLS = `You are an AI assistant for the Queens Resource Nav
 - Provide phone numbers, addresses, and specific actionable details when available.
 
 ## Web search
-- You have access to the \`web_search\` tool. Use it whenever you need current information — hours, eligibility rules, locations, recent policy changes.
-- When you use search results, cite them inline (e.g. "according to NYC.gov...").
+- You have access to the \`web_search\` and \`fetch_webpage\` tools. Use web_search whenever you need current information — hours, eligibility rules, locations, recent policy changes.
+- Use \`fetch_webpage\` when search results show a promising URL and you need the full page content to extract specific details (hours, phone numbers, addresses, eligibility criteria, etc.).
+- When you use search results, cite them inline using the format: \`[1]\`. If listing multiple, do so like: \`[1]\`\`[2]\`
 - The database of local organizations is in your training data (Make the Road NY, Catholic Charities, MinKwon Center, Chhaya CDC, Adhikaar, etc.). Use web_search to confirm or supplement details.
 - Once you have enough information, answer the user directly. Do not keep searching indefinitely.
 
@@ -100,9 +126,14 @@ const SYSTEM_PROMPT_TOOLS = `You are an AI assistant for the Queens Resource Nav
 - Reassuring and practical. Newcomers are often stressed and confused.
 - Never share or ask for immigration status information. Remind users their info is private.
 - If the user's question is too vague, ask clarifying questions (neighborhood, language, cost preference).
+
+**CRITICALLY,** never rely on or make assumptions based on your knowledge!
 `;
 
 const SYSTEM_PROMPT_ANSWER = `You are an AI assistant for the Queens Resource Navigator, a website helping newly arrived immigrants find resources in Queens, NYC. Respond in the same language as the user.
+
+Knowledge cutoff: January 2025
+Current date: ${new Date().toLocaleDateString('en-US')}
 
 ## Scope
 - Your primary focus is helping immigrants in Queens, NYC. This includes: resources, services, legal aid, ESL/language classes, healthcare, food assistance, housing, employment, education, public benefits, community organizations, navigating government systems, local policies, civic information, and elected officials' positions that affect immigrant communities.
@@ -117,7 +148,7 @@ const SYSTEM_PROMPT_ANSWER = `You are an AI assistant for the Queens Resource Na
 
 ## Using provided context
 - Below the user's question you will find a <context> block with search results. Use those results to answer accurately.
-- Cite sources based on the id listed per source, e.g. \`<source id="n"\` with the format \`[1]\` directly after the corresponding section.
+- Cite sources based on the id listed per source, e.g. \`<source id="n"\` with the format \`[1]\` directly after the corresponding section. If listing multiple, do so like: \`[1]\`\`[2]\`
 - Do not mention that you performed a web search. Simply answer using the facts provided.
 - If the context does not contain enough information, answer based on your knowledge, but be honest when you are uncertain.
 
@@ -164,6 +195,48 @@ async function checkSearXNG() {
     return resp.ok;
   } catch {
     return false;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Webpage fetcher (returns content as markdown-ish text)
+// ---------------------------------------------------------------------------
+
+const turndown = new TurndownService({
+  headingStyle: 'atx',
+  bulletListMarker: '-',
+});
+
+async function fetchWebpage(url) {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 20000);
+    const resp = await fetch(url, {
+      signal: controller.signal,
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (compatible; OneQueens/1.0)',
+        Accept: 'text/html,application/xhtml+xml',
+      },
+    });
+    clearTimeout(timeout);
+
+    if (!resp.ok) return { error: `HTTP ${resp.status} fetching ${url}` };
+
+    const contentType = resp.headers.get('content-type') || '';
+    if (!contentType.includes('text/html') && !contentType.includes('text/plain')) {
+      return { error: `Unsupported content type: ${contentType}` };
+    }
+
+    const html = await resp.text();
+    const content = turndown.turndown(html).trim().slice(0, 100000);
+
+    if (!content) return { error: 'Page content was empty after extraction' };
+
+    return { url, content };
+  } catch (e) {
+    if (e.name === 'AbortError') return { error: `Timeout fetching ${url}` };
+    return { error: `Failed to fetch webpage: ${e.message}` };
   }
 }
 
@@ -239,7 +312,6 @@ app.post('/v1/chat/completions', async (req, res) => {
 
 app.post('/api/chat', async (req, res) => {
   const incoming = req.body.messages;
-  const customSystemPrompt = req.body.systemPrompt;
 
   if (!incoming || !incoming.length) {
     return res.status(400).json({ error: 'messages field is required' });
@@ -250,8 +322,8 @@ app.post('/api/chat', async (req, res) => {
     return res.status(400).json({ error: 'latest message must have content' });
   }
 
-  // Use custom system prompt if provided (for i18n), otherwise use default
-  const systemPrompt = customSystemPrompt || SYSTEM_PROMPT_TOOLS;
+  // Always use server's system prompt - never trust client
+  const systemPrompt = SYSTEM_PROMPT_TOOLS;
 
   // Build message list: system prompt + conversation history
   const messages = [
@@ -319,12 +391,26 @@ app.post('/api/chat', async (req, res) => {
           if (!item.error) finalSources.push(item);
         }
       }
+
+      if (tc.function.name === 'fetch_webpage') {
+        let args;
+        try {
+          args = JSON.parse(tc.function.arguments);
+        } catch {
+          console.warn('Failed to parse fetch_webpage arguments');
+          args = {};
+        }
+
+        const page = await fetchWebpage(args.url || '');
+        roundResults[tc.id] = page;
+        console.log(`Fetched webpage '${args.url}':`, page.error || `${page.content.length} chars`);
+      }
     }
 
     // Feed results back as tool messages
     messages.push(msg);
     for (const tc of msg.tool_calls) {
-      if (tc.function.name === 'web_search') {
+      if (tc.function.name === 'web_search' || tc.function.name === 'fetch_webpage') {
         messages.push({
           role: 'tool',
           tool_call_id: tc.id,
@@ -358,8 +444,8 @@ app.post('/api/chat', async (req, res) => {
     finalAnswer = initialAnswer;
   } else {
     // --- Build a clean final prompt with search results as <context> ---
-    // Use localized system prompt for final answer, falling back to default
-    const finalSystemPrompt = customSystemPrompt || SYSTEM_PROMPT_ANSWER;
+    // Always use server's system prompt - never trust client
+    const finalSystemPrompt = SYSTEM_PROMPT_ANSWER;
 
     let finalMessages;
     if (finalSources.length) {
@@ -434,7 +520,7 @@ app.use((req, res) => {
 // ---------------------------------------------------------------------------
 
 app.listen(PORT, HOST, () => {
-  console.log(`Starting Queens Navigator backend on http://${HOST}:${PORT}`);
+  console.log(`Starting One Queens backend on http://${HOST}:${PORT}`);
   console.log(`  Model:       ${CHOSEN_MODEL}`);
   console.log(`  Follow-ups:  (disabled)`);
   console.log(`  SearXNG:     ${SEARXNG_BASE_URL}`);

@@ -56,6 +56,12 @@ client = OpenAI(
     base_url="https://api.novita.ai/openai",
 )
 
+REASONING_EXTRA_BODY = {
+    "chat_template_kwargs": {
+        "enable_reasoning": True,
+    },
+}
+
 # ---------------------------------------------------------------------------
 # Tool definitions
 # ---------------------------------------------------------------------------
@@ -446,7 +452,7 @@ def static_files(path):
 
 if __name__ == "__main__":
     print(
-        f"Starting Queens Navigator backend on http://{HOST}:{PORT}",
+        f"Starting One Queens backend on http://{HOST}:{PORT}",
         flush=True,
     )
     print(f"  Model:       {DEEPSEEK_MODEL}", flush=True)

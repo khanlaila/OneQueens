@@ -46,18 +46,6 @@ const translations = {
     error_hint_suffix: ') and ',
     error_hint_env: 'NOVITA_API_KEY',
     error_hint_end: ' is set.',
-
-    // API system messages (sent to AI but not shown to user)
-    system_prompt: `You are a helpful AI assistant for One Queens, a community resource directory for immigrants in Queens, NYC.
-
-When answering:
-1. Prioritize resources from the local Queens directory when relevant.
-2. Provide practical, actionable information.
-3. Use citations [1], [2], etc. when referencing specific sources.
-4. Be empathetic and respectful - many users may be stressed or confused.
-5. Keep responses clear and organized.
-
-Current date: ${new Date().toLocaleDateString('en-US')}`,
   },
   es: {
     // Navigation
@@ -90,18 +78,6 @@ Current date: ${new Date().toLocaleDateString('en-US')}`,
     error_hint_suffix: ') y que ',
     error_hint_env: 'NOVITA_API_KEY',
     error_hint_end: ' esté configurada.',
-
-    // API system messages
-    system_prompt: `Eres un asistente de IA servicial para One Queens, un directorio de recursos comunitarios para inmigrantes en Queens, Nueva York.
-
-Al responder:
-1. Prioriza los recursos del directorio local de Queens cuando sea relevante.
-2. Proporciona información práctica y accionable.
-3. Usa citas [1], [2], etc. cuando hagas referencia a fuentes específicas.
-4. Sé empático y respetuoso: muchos usuarios pueden estar estresados o confundidos.
-5. Mantén las respuestas claras y organizadas.
-
-Fecha actual: ${new Date().toLocaleDateString('es-ES')}`,
   },
   zh: {
     // Navigation
@@ -134,18 +110,6 @@ Fecha actual: ${new Date().toLocaleDateString('es-ES')}`,
     error_hint_suffix: '）并且已设置',
     error_hint_env: 'NOVITA_API_KEY',
     error_hint_end: '。',
-
-    // API system messages
-    system_prompt: `你是One Queens的AI助手，这是一个为皇后区移民提供的社区资源目录。
-
-回答时：
-1. 在相关情况下优先使用皇后区本地目录中的资源。
-2. 提供实用、可操作的信息。
-3. 引用具体来源时使用[1]、[2]等标注。
-4. 保持同理心和尊重——许多用户可能感到压力或困惑。
-5. 保持回复清晰有条理。
-
-当前日期：${new Date().toLocaleDateString('zh-CN')}`,
   },
   ko: {
     // Navigation
@@ -178,18 +142,6 @@ Fecha actual: ${new Date().toLocaleDateString('es-ES')}`,
     error_hint_suffix: ') 그리고 ',
     error_hint_env: 'NOVITA_API_KEY',
     error_hint_end: '가 설정되었는지 확인하세요.',
-
-    // API system messages
-    system_prompt: `당신은 One Queens의 AI 어시스턴트입니다. One Queens는 뉴욕 퀸즈의 이민자를 위한 커뮤니티 자원 디렉토리입니다.
-
-답변 시:
-1. 관련된 경우 퀸즈 지역 디렉토리의 자원을 우선적으로 사용하세요.
-2. 실용적이고 실행 가능한 정보를 제공하세요.
-3. 특정 출처를 언급할 때 [1], [2] 등의 인용을 사용하세요.
-4. 공감과 존중을 가지고 대하세요 — 많은 사용자가 스트레스를 받거나 혼란스러워할 수 있습니다.
-5. 답변을 명확하고 체계적으로 유지하세요.
-
-현재 날짜: ${new Date().toLocaleDateString('ko-KR')}`,
   },
   bn: {
     // Navigation
@@ -222,18 +174,6 @@ Fecha actual: ${new Date().toLocaleDateString('es-ES')}`,
     error_hint_suffix: ') এবং ',
     error_hint_env: 'NOVITA_API_KEY',
     error_hint_end: ' সেট করা আছে।',
-
-    // API system messages
-    system_prompt: `আপনি One Queens-এর একজন সহায়ক AI সহকারী, যা Queens, NYC-তে ইমিগ্র্যান্টদের জন্য একটি কমিউনিটি রিসোর্স ডিরেক্টরি।
-
-উত্তর দেওয়ার সময়:
-1. প্রাসঙ্গিক হলে স্থানীয় Queens ডিরেক্টরির সম্পদকে অগ্রাধিকার দিন।
-2. ব্যবহারিক, কার্যকরী তথ্য প্রদান করুন।
-3. নির্দিষ্ট উৎস উল্লেখ করতে [1], [2] ইত্যাদি ব্যবহার করুন।
-4. সহানুভূতিশীল এবং শ্রদ্ধাশীল হোন — অনেক ব্যবহারকারী চাপে বা বিভ্রান্ত থাকতে পারেন।
-5. উত্তরগুলি পরিষ্কার এবং সংগঠিত রাখুন।
-
-বর্তমান তারিখ: ${new Date().toLocaleDateString('bn-BD')}`,
   },
 };
 
@@ -249,6 +189,7 @@ function ChatPage() {
   const [language, setLanguage] = useState('en');
   const inputRef = useRef(null);
   const messagesEndRef = useRef(null);
+  const hasSentInitialQuery = useRef(false);
 
   // Get translations for current language
   const t = translations[language] || translations.en;
@@ -273,12 +214,14 @@ function ChatPage() {
 
   // Auto-send initial query from URL
   useEffect(() => {
-    if (initialQuery && conversationHistory.length === 0) {
+    if (initialQuery && conversationHistory.length === 0 && !hasSentInitialQuery.current) {
+      hasSentInitialQuery.current = true;
       setInput(initialQuery);
       // Small delay to let the page render
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         sendMessageWithText(initialQuery);
       }, 100);
+      return () => clearTimeout(timer);
     }
   }, []);
 
@@ -307,7 +250,6 @@ function ChatPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           messages: updatedHistory,
-          systemPrompt: t.system_prompt,
         }),
       });
 
