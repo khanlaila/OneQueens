@@ -440,7 +440,7 @@ app.post('/api/chat', async (req, res) => {
   }
 
   let finalAnswer;
-  if (initialAnswer && !finalSources.length) {
+  if (initialAnswer) {
     finalAnswer = initialAnswer;
   } else {
     // --- Build a clean final prompt with search results as <context> ---
