@@ -126,28 +126,42 @@ button {
 .search-box {
   max-width: 500px;
   margin: 0 auto;
-  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--white);
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  padding: 0 0.25rem 0 0;
 }
 
 .search-box input {
-  width: 100%;
-  padding: 0.85rem 1rem 0.85rem 2.75rem;
+  flex: 1;
+  padding: 0.75rem 0.75rem 0.75rem 1rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 0;
   font-size: 1rem;
-  box-shadow: var(--shadow);
+  background: transparent;
+  outline: none;
+  min-width: 0;
 }
 
-.search-box .icon {
-  position: absolute;
-  left: 0.85rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.8rem;
-  font-weight: 700;
-  opacity: 0.55;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+.search-box .search-submit {
+  flex-shrink: 0;
+  padding: 0.4rem 0.5rem;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--light-blue);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.search-box .search-submit:hover {
+  background: var(--gray);
+  color: var(--blue);
 }
 
 .quick-nav {

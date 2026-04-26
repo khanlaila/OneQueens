@@ -1108,7 +1108,6 @@ function App() {
             }
           }}
         >
-          <span className="icon" aria-hidden="true">Search</span>
           <input
             type="text"
             value={query}
@@ -1116,7 +1115,7 @@ function App() {
             placeholder={copy.search_placeholder || 'Search for legal help, ESL classes, food pantries...'}
           />
           <button type="submit" className="search-submit" aria-label="Search with AI">
-            Ask AI
+            &#8250;
           </button>
         </form>
       </section>
