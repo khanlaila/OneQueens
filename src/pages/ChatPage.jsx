@@ -17,8 +17,7 @@ const languageButtons = [
 const translations = {
   en: {
     // Navigation
-    brand_title: "Queens",
-    brand_subtitle: "Navigator",
+    brand_title: "One Queens",
     new_chat: "+ New chat",
     back_to_directory: "← Back to directory",
 
@@ -50,8 +49,7 @@ const translations = {
   },
   es: {
     // Navigation
-    brand_title: "Queens",
-    brand_subtitle: "Navigator",
+    brand_title: "One Queens",
     new_chat: "+ Nueva conversación",
     back_to_directory: "← Volver al directorio",
 
@@ -84,8 +82,7 @@ const translations = {
   },
   zh: {
     // Navigation
-    brand_title: "Queens",
-    brand_subtitle: "Navigator",
+    brand_title: "One Queens",
     new_chat: "+ 新对话",
     back_to_directory: "← 返回目录",
 
@@ -117,8 +114,7 @@ const translations = {
   },
   ko: {
     // Navigation
-    brand_title: "Queens",
-    brand_subtitle: "Navigator",
+    brand_title: "One Queens",
     new_chat: "+ 새 대화",
     back_to_directory: "← 디렉토리로 돌아가기",
 
@@ -150,8 +146,7 @@ const translations = {
   },
   bn: {
     // Navigation
-    brand_title: "Queens",
-    brand_subtitle: "Navigator",
+    brand_title: "One Queens",
     new_chat: "+ নতুন চ্যাট",
     back_to_directory: "← ডিরেক্টরিতে ফিরুন",
 
@@ -351,7 +346,7 @@ function ChatPage() {
     <div className="chat-page">
       <nav className="chat-nav">
         <h1>
-          {t.brand_title} <span>{t.brand_subtitle}</span>
+          {t.brand_title}
         </h1>
         <div className="nav-actions">
           <button className="new-chat-btn" onClick={resetChat}>
