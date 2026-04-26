@@ -38,6 +38,7 @@ logger = logging.getLogger(__name__)
 
 DEEPSEEK_API_KEY = os.environ.get("NOVITA_API_KEY")
 DEEPSEEK_MODEL = os.environ.get("DEEPSEEK_MODEL", "openai/gpt-oss-120b")
+FOLLOWUP_MODEL = os.environ.get("FOLLOWUP_MODEL", "openai/gpt-oss-120b")
 SEARXNG_BASE_URL = os.environ.get("SEARXNG_BASE_URL", "https://act.search.seoul.st")
 HOST = os.environ.get("HOST", "0.0.0.0")
 PORT = int(os.environ.get("PORT", "8000"))
@@ -210,20 +211,27 @@ def openai_proxy():
 @app.route("/api/chat", methods=["POST"])
 def chat():
     """
-    Simple endpoint for the frontend.
+    Multi-turn chat endpoint.
 
-    Request:  { "query": "..." }
-    Response: { "response": "...", "sources": [...] }
+    Request:  { "messages": [{"role":"user","content":"..."}, ...] }
+              - Client sends the full conversation history each time.
+              - Only the latest message needs to be new.
+    Response: { "response": "...", "sources": [...], "followups": ["...", "...", "..."] }
     """
     data = request.get_json(force=True)
-    query = data.get("query", "").strip()
-    if not query:
-        return jsonify({"error": "query field is required"}), 400
+    incoming = data.get("messages", [])
+    if not incoming:
+        return jsonify({"error": "messages field is required"}), 400
 
-    # Build message list
+    # Extract the latest user message for search/context purposes
+    query = incoming[-1].get("content", "").strip()
+    if not query:
+        return jsonify({"error": "latest message must have content"}), 400
+
+    # Build message list: system prompt + conversation history
     messages: list[dict[str, Any]] = [
         {"role": "system", "content": SYSTEM_PROMPT_TOOLS},
-        {"role": "user", "content": query},
+        *incoming,
     ]
 
     # --- First call: let the model decide if it needs web search ---
@@ -246,7 +254,7 @@ def chat():
         return jsonify({"error": f"LLM API call failed: {e}"}), 502
 
     final_sources: list[dict[str, str]] = []
-    MAX_TOOL_ROUNDS = 3
+    MAX_TOOL_ROUNDS = 2
 
     # --- Tool-calling loop (collects search results only) ---
     initial_answer = ""
@@ -312,60 +320,93 @@ def chat():
             logger.exception("LLM API call (follow-up) failed")
             return jsonify({"error": f"LLM API call failed: {e}"}), 502
 
-    if initial_answer:
-        result = {"response": initial_answer, "sources": final_sources}
-        return jsonify(result)
-
-
-    # --- Build a clean final prompt with search results as <context> ---
-    if final_sources:
-        source_blocks = []
-        for i, src in enumerate(final_sources, 1):
-            source_blocks.append(
-                f'<source id="{i}">\n'
-                f'  <title>{src["title"]}</title>\n'
-                f'  <url>{src["url"]}</url>\n'
-                f'  <content>{src["content"]}</content>\n'
-                f'</source>'
-            )
-        context_block = "<context>\n" + "\n".join(source_blocks) + "\n</context>"
-        final_messages = [
-            {"role": "system", "content": SYSTEM_PROMPT_ANSWER},
-            {"role": "user", "content": f"{query}\n\n{context_block}"},
-        ]
+    if initial_answer and not final_sources:
+        # Model answered without tools and no sources — use as-is
+        final_answer = initial_answer
     else:
-        final_messages = [
-            {"role": "system", "content": SYSTEM_PROMPT_ANSWER},
-            {"role": "user", "content": query},
-        ]
-
-    try:
-        final_response = client.chat.completions.create(
-            model=DEEPSEEK_MODEL,
-            messages=final_messages,
-            top_p=0.95,
-        )
-        if final_response.choices:
-            choice = final_response.choices[0]
-            final_answer = choice.message.content or ""
-            # Some reasoning models put the answer in reasoning_content
-            reasoning = getattr(choice.message, "reasoning_content", None) or ""
-            logger.info("Final response: content=%r, reasoning_content=%r, finish_reason=%s",
-                        final_answer[:200] if final_answer else final_answer,
-                        reasoning[:200] if reasoning else reasoning,
-                        choice.finish_reason)
+        # --- Build a clean final prompt with search results as <context> ---
+        if final_sources:
+            source_blocks = []
+            for i, src in enumerate(final_sources, 1):
+                source_blocks.append(
+                    f'<source id="{i}">\n'
+                    f'  <title>{src["title"]}</title>\n'
+                    f'  <url>{src["url"]}</url>\n'
+                    f'  <content>{src["content"]}</content>\n'
+                    f'</source>'
+                )
+            context_block = "<context>\n" + "\n".join(source_blocks) + "\n</context>"
+            final_messages = [
+                {"role": "system", "content": SYSTEM_PROMPT_ANSWER},
+                {"role": "user", "content": f"{query}\n\n{context_block}"},
+            ]
         else:
-            final_answer = ""
-    except Exception as e:
-        logger.exception("LLM API call (final) failed")
-        return jsonify({"error": f"LLM API call failed: {e}"}), 502
+            final_messages = [
+                {"role": "system", "content": SYSTEM_PROMPT_ANSWER},
+                {"role": "user", "content": query},
+            ]
+
+        try:
+            final_response = client.chat.completions.create(
+                model=DEEPSEEK_MODEL,
+                messages=final_messages,
+                top_p=0.95,
+            )
+            if final_response.choices:
+                choice = final_response.choices[0]
+                final_answer = choice.message.content or ""
+                # Some reasoning models put the answer in reasoning_content
+                reasoning = getattr(choice.message, "reasoning_content", None) or ""
+                logger.info("Final response: content=%r, reasoning_content=%r, finish_reason=%s",
+                            final_answer[:200] if final_answer else final_answer,
+                            reasoning[:200] if reasoning else reasoning,
+                            choice.finish_reason)
+            else:
+                final_answer = ""
+        except Exception as e:
+            logger.exception("LLM API call (final) failed")
+            return jsonify({"error": f"LLM API call failed: {e}"}), 502
 
     if not final_answer:
         logger.warning("LLM returned empty response for query: %s — content and reasoning_content both empty", query)
 
-    result = {"response": final_answer, "sources": final_sources}
+    # --- Generate follow-up questions using smaller model ---
+    followups = _generate_followups(query, final_answer)
+
+    result = {"response": final_answer, "sources": final_sources, "followups": followups}
     logger.info("API response: %s", result)
     return jsonify(result)
+
+
+def _generate_followups(query: str, answer: str) -> list[str]:
+    """Use a smaller model to suggest 3 relevant follow-up questions."""
+    prompt = f"""Based on the user's question and the assistant's answer below, suggest exactly 3 short follow-up questions the user might want to ask next. Each question should be on its own line, numbered 1-3. Do not include any other text.
+
+User asked: {query}
+
+Assistant answered: {answer[:1500]}
+
+Follow-up questions:"""
+    try:
+        resp = client.chat.completions.create(
+            model=FOLLOWUP_MODEL,
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=200,
+            temperature=0.7,
+        )
+        text = resp.choices[0].message.content or ""
+        questions: list[str] = []
+        for line in text.strip().splitlines():
+            line = line.strip()
+            # Strip leading "1. ", "1) ", etc.
+            if len(line) > 2 and line[0].isdigit() and line[1] in ".): ":
+                line = line[2:].strip()
+            if line:
+                questions.append(line)
+        return questions[:3]
+    except Exception:
+        logger.exception("Follow-up generation failed")
+        return []
 
 
 # ---- Config / health check ----------------------------------------------
@@ -409,6 +450,7 @@ if __name__ == "__main__":
         flush=True,
     )
     print(f"  Model:       {DEEPSEEK_MODEL}", flush=True)
+    print(f"  Follow-ups:  {FOLLOWUP_MODEL}", flush=True)
     print(f"  SearXNG:     {SEARXNG_BASE_URL}", flush=True)
     print(f"  Frontend:    http://{HOST if HOST != '0.0.0.0' else '127.0.0.1'}:{PORT}/", flush=True)
     app.run(host=HOST, port=PORT, debug=True)
